@@ -1,45 +1,60 @@
+{-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE UnicodeSyntax #-}
 
-import Control.Monad      ((=<<))
-import Data.Bool          (otherwise)
-import Data.Eq            ((==))
-import Data.Function      (($), (.), id)
-import Data.Functor       ((<$>), fmap)
-import Data.Int           (Int)
-import Data.List          ((++), dropWhileEnd, length, null, tails, take, zipWith)
-import Data.Map           (Map, fromList, fromListWith, mapWithKey, lookup, intersectionWith)
-import Data.Maybe         (maybe)
-import Data.Monoid        ((<>))
-import Data.Ord           ((<), Ord)
-import Data.String        (String)
-import Prelude            ((+), (*), (/), fromIntegral)
-import System.Environment (getArgs)
-import System.IO          (IO, getLine, print)
-import Text.Read          (read)
+import Control.Applicative (pure)
+import Control.Monad       ((=<<))
+import Data.Bool           (otherwise)
+import Data.Eq             ((==))
+import Data.Function       (($), (.), id)
+import Data.Functor        ((<$>), fmap)
+import Data.List           (dropWhileEnd, null, tails)
+import Data.Map            (Map, fromList, fromListWith, mapWithKey, lookup, intersectionWith)
+import Data.Maybe          (Maybe, maybe)
+import Data.Monoid         ((<>))
+import Data.Ord            ((<), Ord)
+import Prelude             ((+), (*), (/), Fractional, Integer, Integral, Num, fromIntegral)
+import System.Environment  (getArgs)
+import System.IO           (IO, getLine, print)
+import Text.Read           (read)
+
+import qualified Data.List as L (length, take)
+
+length ∷ Num c ⇒ [a] →  c
+length = fromIntegral . L.length
+
+take ∷ Integral a ⇒ a → [a1] → [a1]
+take = L.take . fromIntegral
 
 
 
---tabular ∷ ∀ a. Ord a ⇒ Int → [a] → Map [a] Int
-tabular n secuencia
-  | n == 0    = fromList [([], fromIntegral $ length secuencia)]
+tabular
+  ∷ ∀ evento frecuencia. (Num frecuencia, Ord evento)
+  ⇒ Integer → [evento] → Map [evento] frecuencia
+
+tabular orden secuencia
+  | orden == 0    = fromList [([], length secuencia)]
   | otherwise = fromListWith (+) $ (, 1) <$> contextos
   where
---    contextos ∷ [[a]]
+    contextos ∷ [[evento]]
     contextos
-      = dropWhileEnd (\ l → length l < n)
-      . fmap (take n)
+      = dropWhileEnd (\ l → length l < orden)
+      . fmap (take orden)
       . tails
       $ secuencia
 
 
+probabilidades
+  ∷ ∀ evento probabilidad. (Fractional probabilidad, Ord evento)
+  ⇒ [evento] → [evento] → Maybe (Map [evento] probabilidad)
 
---probabilidades ∷ [a] → [a] → [(Double, a)]
 probabilidades secuencia contexto
   = if null contexto
-    then simples
-    else simples .+ condicionales
+    then pure simples
+    else do
+      frecuenciaContexto ← lookup contexto tabla1
+      pure $ simples .+ condicionales frecuenciaContexto
 
   where
     tabla1 = tabular 1 secuencia
@@ -50,14 +65,17 @@ probabilidades secuencia contexto
 
     simples = (* ((3/10)/n)) <$> tabla1
 
-    condicionales
+    condicionales ∷ probabilidad → Map [evento] probabilidad
+    condicionales frecuenciaContexto
       = mapWithKey f tabla1
+
       where
-        frecuenciaContexto = lookup contexto tabla1
+        f ∷ [evento] → Integer → probabilidad
         f evento _
           = (* ((7/10)/frecuenciaContexto))
           . maybe 0 id
           $ lookup (contexto <> evento) tabla2
+
 
 
 main ∷ IO ()
