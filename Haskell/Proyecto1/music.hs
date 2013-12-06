@@ -3,21 +3,27 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE UnicodeSyntax #-}
 
-import Control.Applicative (pure)
-import Control.Monad       ((=<<))
+module Music (contexto, modelo) where
+
+import Control.Applicative (Applicative, pure)
+import Control.Monad       (Monad, join)
 import Data.Bool           (otherwise)
 import Data.Eq             ((==))
+import Data.Foldable       (foldMap)
 import Data.Function       (($), (.), id)
 import Data.Functor        ((<$>), fmap)
+import Data.Int            (Int)
 import Data.List           (dropWhileEnd, null, tails)
-import Data.Map            (Map, fromList, fromListWith, mapWithKey, lookup, intersectionWith)
-import Data.Maybe          (Maybe, maybe)
-import Data.Monoid         ((<>))
+import Data.Map            (Map, fromList, fromListWith, mapWithKey, lookup, intersectionWith, toList)
+import Data.Maybe          (Maybe, fromJust, maybe)
+import Data.Monoid         ((<>), Monoid, mappend, mempty)
 import Data.Ord            ((<), Ord)
-import Prelude             ((+), (*), (/), Fractional, Integer, Integral, Num, fromIntegral)
-import System.Environment  (getArgs)
+import Data.Tuple          (swap)
+import GHC.Real            (denominator)
+import Test.QuickCheck.Gen (Gen, unGen, frequency)
+import Prelude             ((+), (*), (/), Fractional, Integer, Integral, Num, Rational, fromIntegral, lcm, pred, truncate)
 import System.IO           (IO, getLine, print)
-import Text.Read           (read)
+import System.Random       (StdGen, newStdGen)
 
 import qualified Data.List as L (length, take)
 
@@ -34,8 +40,8 @@ tabular
   ⇒ Integer → [evento] → Map [evento] frecuencia
 
 tabular orden secuencia
-  | orden == 0    = fromList [([], length secuencia)]
-  | otherwise = fromListWith (+) $ (, 1) <$> contextos
+  | orden == 0 = fromList [([], length secuencia)]
+  | otherwise  = fromListWith (+) $ (, 1) <$> contextos
   where
     contextos ∷ [[evento]]
     contextos
@@ -76,10 +82,40 @@ probabilidades secuencia contexto
           . maybe 0 id
           $ lookup (contexto <> evento) tabla2
 
+newtype LCM a = LCM {getLCM :: a}
 
+instance Integral a => Monoid (LCM a) where
+  mempty = LCM 1
+  mappend izq der = LCM $ getLCM izq `lcm` getLCM der
+
+iterateM :: (Monad m, Applicative m) => Int -> (e -> m e) -> e -> m [e]
+iterateM 0 _ _ = pure []
+iterateM n f e = do
+  e' <- f e
+  es <- iterateM (pred n) f e'
+  pure (e:es)
+
+
+generar ∷ Ord evento => ([evento] → Map [evento] Rational) → [evento] → Gen [evento]
+generar modelito contexto
+  = frequency
+  . (fmap.fmap) pure
+  . fmap swap
+  . toList
+  $ truncate . (fromIntegral l *) <$> t
+  where
+    l = getLCM $ foldMap LCM (GHC.Real.denominator <$> t)
+    t = modelito contexto
+
+modelo :: (Fractional probabilidad, Ord evento) => [evento] -> [evento] -> Map [evento] probabilidad
+modelo secuencia = fromJust . probabilidades secuencia
+
+composicion :: Ord a => [a] -> StdGen -> [a]
+composicion secuencia generador = join $ unGen (iterateM 50 (generar $ modelo secuencia) []) generador 0
 
 main ∷ IO ()
 main
   = do
-    [n] ← getArgs
-    print . tabular (read n) =<< getLine
+    sec ← getLine
+    g   ← newStdGen
+    print $ composicion sec g
