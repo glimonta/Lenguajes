@@ -1,12 +1,15 @@
 module Main where
 
+import Control.Applicative (pure)
 import Prelude hiding (init)
 import Input
 import Euterpea hiding (Event)
 import Data.List
 import Data.Function
+import Data.Functor
+import System.Random       (newStdGen)
 
-import qualified Music (contexto, modelo)
+import qualified Music (composición, distancia, modelo, tabular)
 
 -- Directorio predeterminado
 directorio :: String
@@ -27,10 +30,15 @@ componer = componer' directorio
 componer' :: String -> IO ()
 componer' dir = do
   (seqs, filenames) <- loadMusicXmls dir
+  generador <- newStdGen
+  let
+    secuencia = concat seqs
+    modelo = Music.modelo secuencia
+    composición = Music.composición longitud secuencia generador
   -- let modelo = ...
   -- let composicion = ...
-  putStrLn $ show composicion
-  play $ sequenceToMusic composicion
+  putStrLn $ show composición
+  play $ sequenceToMusic composición
 
 {- Recupera las diez secuencias más similares a la k-ésima secuencia
    de la colección musical en el directorio por defecto, donde la
@@ -44,10 +52,21 @@ buscar :: Int -> IO ()
 buscar = buscar' directorio
 
 buscar' :: String -> Int -> IO ()
-buscar' dir = do
+buscar' dir n = do
   seqfns <- loadMusicXmls dir
-  let seqfns_ordenados = unzip $ sortBy (compare `on` snd) $ zip seqfns
-  -- ...
+  let seqfns_ordenados@(seqs, filenames) = unzip $ sortBy (compare `on` snd) $ (uncurry zip) seqfns
+  if (n > 0) && (n <= length seqs)
+    then
+      let
+        (a, (pos, (secuenciaOrigen, _)):bs) = splitAt n $ zip [1..] $ uncurry zip $ seqfns_ordenados
+        otras = a ++ bs
+        f (pos, (secuencia, nombre))
+          = (d, show pos ++ "\t" ++ nombre ++ "\t" ++ show d)
+          where
+            d = Music.distancia (Music.tabular 1 secuencia) (Music.tabular 1 secuenciaOrigen)
+      in putStrLn $ unlines $ fmap snd $ take 10 $ sortBy (compare `on` fst) $ f <$> otras
+    else
+      putStrLn "Indice fuera de rango"
 
 tocar :: Int -> IO ()
 tocar n = do
@@ -68,3 +87,8 @@ eventToNote e = note
 
 sequenceToMusic :: [Evento] -> Music Note1
 sequenceToMusic es = line $ map eventToNote es
+
+main :: IO ()
+main
+  = do
+    componer' "xml/"
