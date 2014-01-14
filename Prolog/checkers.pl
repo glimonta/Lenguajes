@@ -199,14 +199,19 @@ moverFichaComer(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Colum
 % Mover una ficha de un lugar a otro.
 moverFicha(Tablero, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo):-
   obtenerCasilla(Tablero, Fila_Inicial, Fila_Final, Ficha),
-  movimientoValido(Tablero, Ficha, TableroNuevo),
+  % movimientoValido(Tablero, Ficha, TableroNuevo),
   (moverFichaComerRecursivo(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo);
    moverFicha(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo)).
 
 jugada(X1,Y1,X2,Y2):-
-  moverFicha(Tablero,X1,Y1,X2,Y2,TableroNuevo).
+  tablero(Tablero),
+  moverFicha(Tablero,X1,Y1,X2,Y2,TableroNuevo),
+  retract(tablero(Tablero)),
+  assert(tablero(TableroNuevo)).
 
 
 
 
-
+main:-inicializarTablero(Tablero),
+  assert(tablero(Tablero)),
+  jugada(3,2,4,3).
