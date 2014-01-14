@@ -1,3 +1,10 @@
+{-
+  Modulo: Main
+
+  Adaptado del módulo Main dado por el prof Carlos Gómez por:
+  Gabriela Limonta 10-10385
+  John Delgado     10-10196
+-}
 module Main where
 
 import Control.Applicative (pure)
@@ -35,8 +42,6 @@ componer' dir = do
     secuencia = concat seqs
     modelo = Music.modelo secuencia
     composición = Music.composición longitud secuencia generador
-  -- let modelo = ...
-  -- let composicion = ...
   putStrLn $ show composición
   play $ sequenceToMusic composición
 

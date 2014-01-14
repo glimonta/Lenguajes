@@ -1,3 +1,14 @@
+{-
+  Modulo: Music
+
+  Modulo que ayuda el manejo de secuencias de eventos.
+  (Calcular distancia entre secuencias, componer secuencias nuevas)
+
+  Autores:
+  Gabriela Limonta 10-10385
+  John Delgado     10-10196
+-}
+
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -27,6 +38,10 @@ import System.Random       (StdGen, newStdGen)
 
 import qualified Data.List as L (length, take)
 
+{-
+  Definimos un length y un take para las listas que nos permita
+  ahorrarnos problemas de tipos numéricos.
+-}
 length ∷ Num c ⇒ [a] →  c
 length = fromIntegral . L.length
 
@@ -35,6 +50,7 @@ take = L.take . fromIntegral
 
 
 
+-- Tabular se encarga de generar un modelo de contexto de un orden determinado dada una secuencia.
 tabular
   ∷ ∀ evento frecuencia. (Num frecuencia, Ord evento)
   ⇒ Integer → [evento] → Map [evento] frecuencia
@@ -51,8 +67,11 @@ tabular orden secuencia
       $ secuencia
 
 
-
--- Ojo nunca llames a esta mierda con una vaina que no sea un evento de ehh...
+{-
+   Probabilidades toma una secuencia y un contexto y devuelve un map que asocia el
+   proximo evento con la probabilidad de que suceda.
+   Probabilidades solo se llama con contextos pertenecientes a la secuencia, nunca con algún otro.
+-}
 probabilidades
   ∷ ∀ evento probabilidad. (Fractional probabilidad, Ord evento)
   ⇒ [evento] → [evento] → Map [evento] probabilidad
@@ -84,11 +103,18 @@ probabilidades secuencia contexto
 
 
 
+-- Nuevo tipo para calcular el minimo comun multiplo de un numero
 newtype LCM a = LCM { getLCM ∷ a }
 
 instance Integral a ⇒ Monoid (LCM a) where
   mempty = LCM 1
   mappend izq der = LCM $ getLCM izq `lcm` getLCM der
+
+{-
+  Toma una funcion y un elemento al que aplicar esa funcion e itera
+  tantas veces sea indicado sobre esto generando una lista que luego
+  genera un computo monadico.
+-}
 
 iterateM ∷ (Monad m, Applicative m) ⇒ Int → (e → m e) → e → m [e]
 iterateM 0 _ _ = pure []
@@ -98,7 +124,12 @@ iterateM n f e = do
   pure (e:es)
 
 
--- nunca le pases un contexto que no esté o.. REPTAAAAAR (y pau pau :C)
+{-
+   Generar toma un modelo y un contexto y devuelve un mapa que asocia el contexto dado con
+   otro mapa que tiene la asociacion entre los distintos eventos que pueden ocurrir y la
+   probabilidad de que ocurran. Por cada llamada se genera una entrada en el map con todas
+   las posibilidades para ese contexto.
+-}
 generar ∷ Ord evento ⇒ (Map [evento] (Map [evento] Rational)) → [evento] → Gen [evento]
 generar modelito contexto
   = frequency
@@ -110,22 +141,36 @@ generar modelito contexto
     l = getLCM $ foldMap LCM (GHC.Real.denominator <$> t)
     t = fromJust $ lookup contexto modelito
 
+{-
+   Representa el modelo de probabilidad de una secuencia dada. Toma una secuencia y genera el mapa
+   asociativo entre los contextos y la asociacion entre los eventos posibles y su probabilidad de ocurrir.
+-}
 modelo ∷ (Fractional probabilidad, Ord evento) ⇒ [evento] → Map [evento] (Map [evento] probabilidad)
 modelo secuencia = insert [] simples $ mapWithKey (const . probabilidades secuencia) simples
   where
     simples = (tabular 1 secuencia)
 
+{-
+   Composición se encarga de componer una nueva secuencia musical de longitud dada y semejante a una secuencia
+   dada también.
+-}
 composición ∷ Ord evento ⇒ Int → [evento] → StdGen → [evento]
 composición longitud secuencia generador = join $ unGen (iterateM longitud (generar $ modelo secuencia) []) generador 0
 
-
+{-
+   Distancia se encarga de calcular la distancia entre dos modelos de  contexto que representan a dos secuencias distintas.
+-}
 distancia ∷ (Ord evento, Floating frecuencia) ⇒ Map [evento] frecuencia → Map [evento] frecuencia → frecuencia
 distancia a b = sqrt $ getSum $ foldMap Sum $ (** 2) <$> unionWith (-) b a
 
-
+{-
+   Main de prueba para el módulo, se puede probar el modulo solo descomentando esta parte del codigo
+-}
+{-
 main ∷ IO ()
 main
   = do
     sec ← getLine
     g   ← newStdGen
     print $ composición 10 sec g
+-}
