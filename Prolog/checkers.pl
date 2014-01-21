@@ -44,13 +44,22 @@ obtenerContenidoCasilla(Tablero, Fila, Columna, Contenido):-
   sign(Casilla, Contenido).
 
 inicializarTablero(Tablero):-
-  Tablero = tablero(rey_blanco, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
-                    vacio, peon_negro, vacio, vacio, vacio, vacio, vacio, vacio,
+Tablero = tablero(vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco,
+                    peon_blanco, vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco, vacio,
+                    vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco,
                     vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
                     vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
+                    peon_negro, vacio, peon_negro, vacio, peon_negro, vacio, peon_negro, vacio,
+                    vacio, peon_negro, vacio, peon_negro, vacio, peon_negro, vacio, peon_negro,
+                    peon_negro, vacio, peon_negro, vacio, peon_negro, vacio, peon_negro, vacio).
+
+tablero(vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
+                    vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
+                    vacio, vacio, vacio, vacio, peon_negro, vacio, vacio, vacio,
                     vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
                     vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
-                    vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
+                    vacio, vacio, vacio, vacio, vacio, peon_negro, vacio, vacio,
+                    vacio, vacio, vacio, vacio, vacio, vacio, rey_blanco, vacio,
                     vacio, vacio, vacio, vacio, vacio, vacio, vacio, vacio).
 
 tablero(vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco, vacio, peon_blanco,
@@ -83,38 +92,41 @@ tablero(rey_blanco, vacio, vacio, vacio, vacio, vacio, vacio, vacio,
 
 % Casos borde
 colocarElemento(Tablero, 8, Columna, peon_blanco, TableroNuevo):-
-  colocarElemento(Tablero, 8, Columna, rey_blanco, TableroNuevo).
+  colocarElemento(Tablero, 8, Columna, rey_blanco, TableroNuevo), !.
 
 colocarElemento(Tablero, 1, Columna, peon_negro, TableroNuevo):-
-  colocarElemento(Tablero, 1, Columna, rey_negro, TableroNuevo).
+  colocarElemento(Tablero, 1, Columna, rey_negro, TableroNuevo), !.
 
 colocarElemento(Tablero, Fila, Columna, Elemento, TableroNuevo):-
   Pos is ((Fila - 1) * 8) + Columna,
+  write('Coloco en la fila:  '), write(Fila), write('Coloco en la columna:  '), write(Columna),nl,
+  write('Coloco en la posicion:  '), write(Pos), nl,
   Tablero =.. [tablero|Contenido],
   reemplazar(Contenido, Pos, Elemento, ContenidoNuevo),
   TableroNuevo =.. [tablero|ContenidoNuevo].
 
+
 reemplazar(Lista, Posicion, Elemento, ListaNueva):-
-  reemplazar(Lista, Posicion, Elemento, ListaNueva, 1).
+  reemplazarAux(Lista, Posicion, Elemento, ListaNueva, 1).
 
-reemplazar([], _, _, [], _).
+%reemplazarAux([], _, _, [], _).
 
-reemplazar([_|Xs], Posicion, Elemento, [Elemento|Ys], Posicion):-
-  ContadorNuevo is Posicion + 1, !,
-  reemplazar(Xs, Posicion, Elemento, Ys, ContadorNuevo).
+reemplazarAux([_|Xs], Posicion, Elemento, [Elemento|Xs], Posicion):- !.
+%  ContadorNuevo is Posicion + 1, !,
+%  reemplazarAux(Xs, Posicion, Elemento, Ys, ContadorNuevo).
 
-reemplazar([X|Xs], Posicion, Elemento, [X|Ys], Contador):-
+reemplazarAux([X|Xs], Posicion, Elemento, [X|Ys], Contador):-
   ContadorNuevo is Contador + 1,
-  reemplazar(Xs, Posicion, Elemento, Ys, ContadorNuevo).
+  reemplazarAux(Xs, Posicion, Elemento, Ys, ContadorNuevo).
 
 contar(Tablero, Elemento, Cantidad):-
   Tablero =.. [tablero|Contenido],
   contarLista(Contenido, Elemento, Cantidad, 0).
 
-contarLista([], _, Cantidad, Cantidad).
+contarLista([], _, Cantidad, Cantidad):- !.
 
 contarLista([Elemento|Xs], Elemento, Cantidad, Contador):-
-  ContadorNuevo is Contador + 1, !,
+  !, ContadorNuevo is Contador + 1,
   contarLista(Xs, Elemento, Cantidad, ContadorNuevo).
 
 contarLista([_| Xs], Elemento, Cantidad, Contador):-
@@ -169,7 +181,7 @@ validarComida(Tablero, Rey, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_F
   Fila_Enemigo is (Fila_Final + Fila_Inicial) / 2,
   Columna_Enemigo is (Columna_Final + Columna_Inicial)/2,
   enemigos(Rey, Enemigo),
-  obtenerCasilla(Tablero, Fila_Enemigo, Columna_Enemigo, Enemigo).
+  obtenerFicha(Tablero, Fila_Enemigo, Columna_Enemigo, Enemigo).
 
 validarComida(Tablero, peon_blanco, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final):-
   Fila_Final >= 1, Fila_Final =< 8, Columna_Final >= 1, Columna_Final =< 8,
@@ -180,7 +192,7 @@ validarComida(Tablero, peon_blanco, Fila_Inicial, Columna_Inicial, Fila_Final, C
   Fila_Enemigo is (Fila_Final + Fila_Inicial) / 2,
   Columna_Enemigo is (Columna_Final + Columna_Inicial)/2,
   enemigos(peon_blanco, Enemigo),
-  obtenerCasilla(Tablero, Fila_Enemigo, Columna_Enemigo, Enemigo).
+  obtenerFicha(Tablero, Fila_Enemigo, Columna_Enemigo, Enemigo).
 
 validarComida(Tablero, peon_negro, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final):-
   Fila_Final >= 1, Fila_Final =< 8, Columna_Final >= 1, Columna_Final =< 8,
@@ -191,7 +203,7 @@ validarComida(Tablero, peon_negro, Fila_Inicial, Columna_Inicial, Fila_Final, Co
   Fila_Enemigo is (Fila_Final + Fila_Inicial) / 2,
   Columna_Enemigo is (Columna_Final + Columna_Inicial)/2,
   enemigos(peon_negro, Enemigo),
-  obtenerCasilla(Tablero, Fila_Enemigo, Columna_Enemigo, Enemigo).
+  obtenerFicha(Tablero, Fila_Enemigo, Columna_Enemigo, Enemigo).
 
 % Movida normal de una Ficha
 moverFicha(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo):-
@@ -213,7 +225,7 @@ moverFichaComerRecursivo(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Fin
   (((moverFichaComer(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Inicial1, Columna_Inicial1, TableroTemporal),
   moverFichaComerRecursivo(TableroTemporal, Ficha, Fila_Inicial1, Columna_Inicial1, Fila_Final, Columna_Final, TableroNuevo)));
   (moverFichaComer(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Inicial1, Columna_Inicial2, TableroTemporal),
-  moverFichaComerRecursivo(TableroTemporal, Ficha, Fila_Inicial1, Columna_Inicial1, Fila_Final, Columna_Final, TableroNuevo))).
+  moverFichaComerRecursivo(TableroTemporal, Ficha, Fila_Inicial1, Columna_Inicial2, Fila_Final, Columna_Final, TableroNuevo))).
 
 % Movida para comer normalmente
 moverFichaComer(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo):-
@@ -271,7 +283,7 @@ movimientoValido(Tablero, Turno, TableroNuevo):-
 mover(Tablero, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo):-
   obtenerFicha(Tablero, Fila_Inicial, Columna_Inicial, Ficha),
   turno(Turno),
-  fichaDelTurno(Turno, Ficha),
+  fichaDelTurno(Turno, Ficha), !,
   movimientoValido(Tablero, Turno, TableroNuevo),
   (moverFichaComerRecursivo(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo);
   moverFicha(Tablero, Ficha, Fila_Inicial, Columna_Inicial, Fila_Final, Columna_Final, TableroNuevo)).
@@ -292,8 +304,8 @@ jugada(X1,Y1,X2,Y2):-
   retractall(tablero(Tablero)),
   assert(tablero(TableroNuevo)),
   imprimirTablero(TableroNuevo), !,
-  not(ganador(TableroNuevo, Jugador)),
   retractall(turno(Jugador)),
+  not(ganador(TableroNuevo, Jugador)),
   proximoJugador(Jugador, JugadorNuevo),
   assert(turno(JugadorNuevo)),
   imprimirJugador(JugadorNuevo).
@@ -303,14 +315,16 @@ proximoJugador(negro, blanco).
 
 imprimirJugador(blanco):- write('Juega jugador 1'), nl, nl.
 imprimirJugador(negro):-  write('Juega jugador 2'), nl, nl.
-  
 
 jugar:-
-  write('Desea jugar con la máquina? (S/N)?'),
+  write('Desea jugar con la máquina? (s/n)?'),
   read(R),
+  ((R = s,!,
+  write('Error 404: Maquina not found.'));
+  (R = n,
   write('Comenzó el juego'), nl,
   inicializarTablero(Tablero),
   assert(tablero(Tablero)),
   imprimirTablero(Tablero),
   assert(turno(blanco)),
-  imprimirJugador(blanco).
+  imprimirJugador(blanco))).
