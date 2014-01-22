@@ -38,14 +38,14 @@ imprimirCasilla(X,Y):-
   write(' |>>|').
 
 inicializarTablero:-
-  assert(vacio(1,1)), assert(blanco(1,2)), assert(vacio(1,3)), assert(blanco(1,4)), assert(vacio(1,5)), assert(blanco(1,6)), assert(vacio(1,7)), assert(blanco(1,8)),
-  assert(blanco(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(blanco(2,5)), assert(vacio(2,6)), assert(blanco(2,7)), assert(vacio(2,8)),
-  assert(vacio(3,1)), assert(blanco(3,2)), assert(vacio(3,3)), assert(blanco(3,4)), assert(vacio(3,5)), assert(blanco(3,6)), assert(vacio(3,7)), assert(blanco(3,8)),
-  assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(vacio(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
+  assert(vacio(1,1)), assert(vacio(1,2)), assert(vacio(1,3)), assert(vacio(1,4)), assert(vacio(1,5)), assert(vacio(1,6)), assert(vacio(1,7)), assert(vacio(1,8)),
+  assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(blanco(2,6)), assert(vacio(2,7)), assert(negro(2,8)),
+  assert(vacio(3,1)), assert(vacio(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
+  assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(blanco(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
   assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
-  assert(negro(6,1)), assert(vacio(6,2)), assert(negro(6,3)), assert(vacio(6,4)), assert(negro(6,5)), assert(vacio(6,6)), assert(negro(6,7)), assert(vacio(6,8)),
-  assert(vacio(7,1)), assert(negro(7,2)), assert(vacio(7,3)), assert(negro(7,4)), assert(vacio(7,5)), assert(negro(7,6)), assert(vacio(7,7)), assert(negro(7,8)),
-  assert(negro(8,1)), assert(vacio(8,2)), assert(negro(8,3)), assert(vacio(8,4)), assert(negro(8,5)), assert(vacio(8,6)), assert(negro(8,7)), assert(vacio(8,8)).
+  assert(vacio(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
+  assert(vacio(7,1)), assert(vacio(7,2)), assert(vacio(7,3)), assert(vacio(7,4)), assert(vacio(7,5)), assert(vacio(7,6)), assert(vacio(7,7)), assert(vacio(7,8)),
+  assert(vacio(8,1)), assert(vacio(8,2)), assert(vacio(8,3)), assert(vacio(8,4)), assert(vacio(8,5)), assert(vacio(8,6)), assert(vacio(8,7)), assert(vacio(8,8)).
 
 imprimirJugador(blanco):- write('Juega jugador 1'), nl, nl.
 imprimirJugador(negro):-  write('Juega jugador 2'), nl, nl.
