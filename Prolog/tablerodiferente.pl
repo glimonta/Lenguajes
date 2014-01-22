@@ -61,6 +61,7 @@ jugar:-
   assert(turno(blanco)),
   imprimirJugador(blanco)));
   (R = n,
+  assert(juega(humano)),
   write('Comenzó el juego'), nl,
   inicializarTablero,
   imprimirTablero,
@@ -156,14 +157,15 @@ jugada(X1,Y1,X2,Y2):-
   jugadaComp.
 
 jugadaComp:-
-  juega(computadora), !,
+  juega(computadora),
   jugada(X,Y,Z,W),
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
   imprimirJugador(blanco).
 
-jugadaComp.
+jugadaComp:-
+  juega(humano).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAD(X1,Y1,X2,Y2), !,
