@@ -38,14 +38,14 @@ imprimirCasilla(X,Y):-
   write(' |>>|').
 
 inicializarTablero:-
-  assert(vacio(1,1)), assert(vacio(1,2)), assert(vacio(1,3)), assert(vacio(1,4)), assert(vacio(1,5)), assert(vacio(1,6)), assert(vacio(1,7)), assert(vacio(1,8)),
-  assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(vacio(2,6)), assert(vacio(2,7)), assert(vacio(2,8)),
-  assert(vacio(3,1)), assert(negro(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
+  assert(vacio(1,1)), assert(blanco(1,2)), assert(vacio(1,3)), assert(blanco(1,4)), assert(vacio(1,5)), assert(blanco(1,6)), assert(vacio(1,7)), assert(blanco(1,8)),
+  assert(blanco(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(blanco(2,5)), assert(vacio(2,6)), assert(blanco(2,7)), assert(vacio(2,8)),
+  assert(vacio(3,1)), assert(blanco(3,2)), assert(vacio(3,3)), assert(blanco(3,4)), assert(vacio(3,5)), assert(blanco(3,6)), assert(vacio(3,7)), assert(blanco(3,8)),
   assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(vacio(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
-  assert(vacio(5,1)), assert(negro(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
-  assert(vacio(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
-  assert(vacio(7,1)), assert(vacio(7,2)), assert(vacio(7,3)), assert(vacio(7,4)), assert(vacio(7,5)), assert(vacio(7,6)), assert(vacio(7,7)), assert(vacio(7,8)),
-  assert(vacio(8,1)), assert(vacio(8,2)), assert(vacio(8,3)), assert(vacio(8,4)), assert(vacio(8,5)), assert(vacio(8,6)), assert(vacio(8,7)), assert(vacio(8,8)).
+  assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
+  assert(negro(6,1)), assert(vacio(6,2)), assert(negro(6,3)), assert(vacio(6,4)), assert(negro(6,5)), assert(vacio(6,6)), assert(negro(6,7)), assert(vacio(6,8)),
+  assert(vacio(7,1)), assert(negro(7,2)), assert(vacio(7,3)), assert(negro(7,4)), assert(vacio(7,5)), assert(negro(7,6)), assert(vacio(7,7)), assert(negro(7,8)),
+  assert(negro(8,1)), assert(vacio(8,2)), assert(negro(8,3)), assert(vacio(8,4)), assert(negro(8,5)), assert(vacio(8,6)), assert(negro(8,7)), assert(vacio(8,8)).
 
 imprimirJugador(blanco):- write('Juega jugador 1'), nl, nl.
 imprimirJugador(negro):-  write('Juega jugador 2'), nl, nl.
@@ -67,6 +67,26 @@ jugar:-
   imprimirTablero,
   assert(turno(blanco)),
   imprimirJugador(blanco))).
+
+
+
+intentarJugarCompu:-
+  jugadaComputadora(1,1).
+
+jugadaComputadora(X,Y):-
+  jugada(X,Y,Z,W), !.
+
+jugadaComputadora(X,Y):-
+  Y < 8,
+  YN is Y + 1,
+  jugadaComputadora(X,YN), !.
+
+jugadaComputadora(X,Y):-
+  X < 8,
+  YN is 1,
+  XN is X + 1,
+  jugadaComputadora(XN, YN), !.
+
 
 jugada(X1,Y1,X2,Y2):-
   reyNegro(X1,Y1),
@@ -134,68 +154,50 @@ jugada(X1,Y1,X2,Y2):-
 
 jugadaComp:-
   juega(computadora),
-  jugadaComp(X,Y,Z,W), !.
+  intentarJugarCompu.
 
 jugadaComp:-
   juega(humano).
 
-jugadaComp(X1,Y1,X2,Y2):-
-  juega(computadora),
-  reyNegro(X1,Y1),
-  turno(negro),
-  vacio(X2,Y2),
-  comerReyNegro(X1,Y1,X2,Y2), !,
-  write('Movimiento jugador 2:'), nl,
-  verificarGanadorNegro.
-
-jugadaComp(X1,Y1,X2,Y2):-
-  juega(computadora),
-  reyNegro(X1,Y1),
-  turno(negro),
-  vacio(X2,Y2),
-  moverReyNegro(X1,Y1,X2,Y2), !,
-  write('Movimiento jugador 2:'), nl,
-  verificarGanadorNegro.
-
-jugadaComp(X1,Y1,X2,Y2):-
-  juega(computadora),
-  negro(X1,Y1),
-  turno(negro),
-  vacio(X2,Y2),
-  comerNegro(X1,Y1,X2,Y2), !,
-  write('Movimiento jugador 2:'), nl,
-  verificarGanadorNegro.
-
-jugadaComp(X1,Y1,X2,Y2):-
-  juega(computadora),
-  negro(X1,Y1),
-  turno(negro),
-  vacio(X2,Y2),
-  moverNegro(X1,Y1,X2,Y2), !,
-  write('Movimiento jugador 2:'), nl,
-  verificarGanadorNegro.
 
 
 
 verificarGanadorNegro:-
-  noGanador(negro),
+  not(juega(computadora)),
+  noGanador(negro), !,
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
-  imprimirJugador(blanco),
-  jugadaComp.
+  imprimirJugador(blanco).
+
+verificarGanadorNegro:-
+  juega(computadora),
+  noGanador(negro), !,
+  retract(turno(negro)),
+  assert(turno(blanco)),
+  imprimirTablero,
+  imprimirJugador(blanco).
 
 verificarGanadorNegro:-
   imprimirTablero,
   write('Ha ganado el jugador 2!').
 
 verificarGanadorBlanco:-
-  noGanador(blanco),
+  not(juega(computadora)),
+  noGanador(blanco), !,
+  retract(turno(blanco)),
+  assert(turno(negro)),
+  imprimirTablero,
+  imprimirJugador(negro).
+
+verificarGanadorBlanco:-
+  juega(computadora),
+  noGanador(blanco), !,
   retract(turno(blanco)),
   assert(turno(negro)),
   imprimirTablero,
   imprimirJugador(negro),
-  jugadaComp.
+  jugadaComp, !.
 
 verificarGanadorBlanco:-
   imprimirTablero,
@@ -206,7 +208,6 @@ noGanador(negro):-
 
 noGanador(blanco):-
   (negro(X,Y); reyBlanco(Z,W)).
-
 
 
 seguirComiendoReyBlanco(X,Y):-
@@ -683,93 +684,93 @@ seguirComiendoBlanco(X,Y):-
   comerBlanco(X,Y,XN,YN).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoReyAD(X1,Y1,X2,Y2), !,
+  validoComerBlancoReyAD(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoReyAI(X1,Y1,X2,Y2), !,
+  validoComerBlancoReyAI(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoReyDD(X1,Y1,X2,Y2), !,
+  validoComerBlancoReyDD(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoReyDI(X1,Y1,X2,Y2), !,
+  validoComerBlancoReyDI(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoPeonAD(X1,Y1,X2,Y2), !,
+  validoComerBlancoPeonAD(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoPeonAI(X1,Y1,X2,Y2), !,
+  validoComerBlancoPeonAI(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoPeonDD(X1,Y1,X2,Y2), !,
+  validoComerBlancoPeonDD(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
-  validoComerBlancoPeonDI(X1,Y1,X2,Y2), !,
+  validoComerBlancoPeonDI(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
   retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(8,Y2)),
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)),
+  assert(reyBlanco(8,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoBlanco(X2,Y2).
+  seguirComiendoBlanco(8,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyAD(X1,Y1,X2,Y2), !,
@@ -875,93 +876,93 @@ seguirComiendoNegro(X,Y):-
 
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroReyAD(X1,Y1,X2,Y2), !,
+  validoComerNegroReyAD(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroReyAI(X1,Y1,X2,Y2), !,
+  validoComerNegroReyAI(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroReyDD(X1,Y1,X2,Y2), !,
+  validoComerNegroReyDD(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroReyDI(X1,Y1,X2,Y2), !,
+  validoComerNegroReyDI(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroPeonAD(X1,Y1,X2,Y2), !,
+  validoComerNegroPeonAD(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroPeonAI(X1,Y1,X2,Y2), !,
+  validoComerNegroPeonAI(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroPeonDD(X1,Y1,X2,Y2), !,
+  validoComerNegroPeonDD(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
-  validoComerNegroPeonDI(X1,Y1,X2,Y2), !,
+  validoComerNegroPeonDI(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)),
+  assert(reyNegro(1,Y2)),
   assert(vacio(XE,YE)),
-  seguirComiendoNegro(X2,Y2).
+  seguirComiendoNegro(1,Y2).
 
 
 comerNegro(X1,Y1,X2,Y2):-
@@ -1153,38 +1154,38 @@ validoComerNegroPeonDI(X1,Y1,X2,Y2):-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 moverBlanco(X1,Y1,8,Y2):-
+  validoMoverBlancoAD(X1,Y1,8,Y2), !,
+  retract(blanco(X1,Y1)),
+  retract(vacio(8,Y2)),
+  assert(vacio(X1,Y1)),
+  assert(reyBlanco(8,Y2)).
+
+moverBlanco(X1,Y1,8,Y2):-
+  validoMoverBlancoAI(X1,Y1,8,Y2), !,
+  retract(blanco(X1,Y1)),
+  retract(vacio(8,Y2)),
+  assert(vacio(X1,Y1)),
+  assert(reyBlanco(8,Y2)).
+
+moverBlanco(X1,Y1,8,Y2):-
+  validoMoverBlancoDD(X1,Y1,8,Y2), !,
+  retract(blanco(X1,Y1)),
+  retract(vacio(8,Y2)),
+  assert(vacio(X1,Y1)),
+  assert(reyBlanco(8,Y2)).
+
+moverBlanco(X1,Y1,8,Y2):-
+  validoMoverBlancoDI(X1,Y1,8,Y2), !,
+  retract(blanco(X1,Y1)),
+  retract(vacio(8,Y2)),
+  assert(vacio(X1,Y1)),
+  assert(reyBlanco(8,Y2)).
+
+moverBlanco(X1,Y1,X2,Y2):-
   validoMoverBlancoAD(X1,Y1,X2,Y2), !,
   retract(blanco(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
-
-moverBlanco(X1,Y1,8,Y2):-
-  validoMoverBlancoAI(X1,Y1,X2,Y2), !,
-  retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
-  assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
-
-moverBlanco(X1,Y1,8,Y2):-
-  validoMoverBlancoDD(X1,Y1,X2,Y2), !,
-  retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
-  assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
-
-moverBlanco(X1,Y1,8,Y2):-
-  validoMoverBlancoDI(X1,Y1,X2,Y2), !,
-  retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
-  assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
-
-moverBlanco(X1,Y1,X2,Y2):-
-  validoMoverBlancoAD(X1,Y1,X2,Y2), !,
-  retract(blanco(X1,Y1)),
-  retract(vacio(X2,Y2)),
-  assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)).
 
 moverBlanco(X1,Y1,X2,Y2):-
@@ -1210,32 +1211,32 @@ moverBlanco(X1,Y1,X2,Y2):-
 
 
 moverNegro(X1,Y1,1,Y2):-
-  validoMoverNegroAD(X1,Y1,X2,Y2), !,
+  validoMoverNegroAD(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(1,Y2)).
 
 moverNegro(X1,Y1,1,Y2):-
-  validoMoverNegroAI(X1,Y1,X2,Y2), !,
+  validoMoverNegroAI(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(1,Y2)).
 
 moverNegro(X1,Y1,1,Y2):-
-  validoMoverNegroDD(X1,Y1,X2,Y2), !,
+  validoMoverNegroDD(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(1,Y2)).
 
 moverNegro(X1,Y1,1,Y2):-
-  validoMoverNegroDI(X1,Y1,X2,Y2), !,
+  validoMoverNegroDI(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
-  retract(vacio(X2,Y2)),
+  retract(vacio(1,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(1,Y2)).
 
 moverNegro(X1,Y1,X2,Y2):-
   validoMoverNegroAD(X1,Y1,X2,Y2), !,
