@@ -53,8 +53,13 @@ imprimirJugador(negro):-  write('Juega jugador 2'), nl, nl.
 jugar:-
   write('Desea jugar con la máquina? (s/n)?'),
   read(R),
-  ((R = s,!,
-  write('Error 404: Maquina not found.'));
+  (((R = s,!,
+  assert(juega(computadora)),
+  write('Comenzó el juego'), nl,
+  inicializarTablero,
+  imprimirTablero,
+  assert(turno(blanco)),
+  imprimirJugador(blanco)));
   (R = n,
   write('Comenzó el juego'), nl,
   inicializarTablero,
@@ -70,7 +75,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
-  imprimirJugador(blanco).
+  imprimirJugador(blanco),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   reyNegro(X1,Y1),
@@ -80,7 +86,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
-  imprimirJugador(blanco).
+  imprimirJugador(blanco),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   reyBlanco(X1,Y1),
@@ -90,7 +97,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(blanco)),
   assert(turno(negro)),
   imprimirTablero,
-  imprimirJugador(negro).
+  imprimirJugador(negro),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   reyBlanco(X1,Y1),
@@ -100,7 +108,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(blanco)),
   assert(turno(negro)),
   imprimirTablero,
-  imprimirJugador(negro).
+  imprimirJugador(negro),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   blanco(X1,Y1),
@@ -110,7 +119,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(blanco)),
   assert(turno(negro)),
   imprimirTablero,
-  imprimirJugador(negro).
+  imprimirJugador(negro),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   blanco(X1,Y1),
@@ -120,7 +130,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(blanco)),
   assert(turno(negro)),
   imprimirTablero,
-  imprimirJugador(negro).
+  imprimirJugador(negro),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   negro(X1,Y1),
@@ -130,7 +141,8 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
-  imprimirJugador(blanco).
+  imprimirJugador(blanco),
+  jugadaComp.
 
 jugada(X1,Y1,X2,Y2):-
   negro(X1,Y1),
@@ -140,8 +152,18 @@ jugada(X1,Y1,X2,Y2):-
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
+  imprimirJugador(blanco),
+  jugadaComp.
+
+jugadaComp:-
+  juega(computadora), !,
+  jugada(X,Y,Z,W),
+  retract(turno(negro)),
+  assert(turno(blanco)),
+  imprimirTablero,
   imprimirJugador(blanco).
 
+jugadaComp.
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAD(X1,Y1,X2,Y2), !,
