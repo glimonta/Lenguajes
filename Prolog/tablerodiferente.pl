@@ -62,7 +62,6 @@ jugar:-
   assert(turno(blanco)),
   imprimirJugador(blanco))).
 
-
 jugada(X1,Y1,X2,Y2):-
   reyNegro(X1,Y1),
   turno(negro),
