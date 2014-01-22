@@ -39,9 +39,9 @@ imprimirCasilla(X,Y):-
 
 inicializarTablero:-
   assert(vacio(1,1)), assert(vacio(1,2)), assert(vacio(1,3)), assert(vacio(1,4)), assert(vacio(1,5)), assert(vacio(1,6)), assert(vacio(1,7)), assert(vacio(1,8)),
-  assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(blanco(2,6)), assert(vacio(2,7)), assert(negro(2,8)),
+  assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(blanco(2,6)), assert(vacio(2,7)), assert(vacio(2,8)),
   assert(vacio(3,1)), assert(vacio(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
-  assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(blanco(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
+  assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(blanco(4,6)), assert(negro(4,7)), assert(vacio(4,8)),
   assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
   assert(vacio(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
   assert(vacio(7,1)), assert(vacio(7,2)), assert(vacio(7,3)), assert(vacio(7,4)), assert(vacio(7,5)), assert(vacio(7,6)), assert(vacio(7,7)), assert(vacio(7,8)),
