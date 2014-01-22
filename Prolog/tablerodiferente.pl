@@ -732,25 +732,25 @@ comerNegro(X1,Y1,X2,Y2):-
 validoComerBlancoReyAD(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   reyNegro(X,Y).
 
 validoComerBlancoPeonAD(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   negro(X,Y).
 
 validoComerBlancoReyAI(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   reyNegro(X,Y).
 
 validoComerBlancoPeonAI(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   negro(X,Y).
 
 validoComerBlancoReyDD(X1,Y1,X2,Y2):-
@@ -768,37 +768,37 @@ validoComerBlancoPeonDD(X1,Y1,X2,Y2):-
 validoComerBlancoReyDI(X1,Y1,X2,Y2):-
   X2 =:= X1 + 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   reyNegro(X,Y).
 
 validoComerBlancoPeonDI(X1,Y1,X2,Y2):-
   X2 =:= X1 + 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   negro(X,Y).
 
 validoComerNegroReyAD(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   reyBlanco(X,Y).
 
 validoComerNegroPeonAD(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   blanco(X,Y).
 
 validoComerNegroReyAI(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   reyBlanco(X,Y).
 
 validoComerNegroPeonAI(X1,Y1,X2,Y2):-
   X2 =:= X1 - 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   blanco(X,Y).
 
 validoComerNegroReyDD(X1,Y1,X2,Y2):-
@@ -816,13 +816,13 @@ validoComerNegroPeonDD(X1,Y1,X2,Y2):-
 validoComerNegroReyDI(X1,Y1,X2,Y2):-
   X2 =:= X1 + 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   reyBlanco(X,Y).
 
 validoComerNegroPeonDI(X1,Y1,X2,Y2):-
   X2 =:= X1 + 2,
   Y2 =:= Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   blanco(X,Y).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
