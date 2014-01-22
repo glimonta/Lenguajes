@@ -39,9 +39,9 @@ imprimirCasilla(X,Y):-
 
 inicializarTablero:-
   assert(vacio(1,1)), assert(vacio(1,2)), assert(vacio(1,3)), assert(vacio(1,4)), assert(vacio(1,5)), assert(vacio(1,6)), assert(vacio(1,7)), assert(vacio(1,8)),
-  assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(blanco(2,6)), assert(vacio(2,7)), assert(vacio(2,8)),
-  assert(vacio(3,1)), assert(vacio(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
-  assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(blanco(4,6)), assert(negro(4,7)), assert(vacio(4,8)),
+  assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(vacio(2,6)), assert(vacio(2,7)), assert(vacio(2,8)),
+  assert(vacio(3,1)), assert(negro(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
+  assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(vacio(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
   assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
   assert(vacio(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
   assert(vacio(7,1)), assert(vacio(7,2)), assert(vacio(7,3)), assert(vacio(7,4)), assert(vacio(7,5)), assert(vacio(7,6)), assert(vacio(7,7)), assert(vacio(7,8)),
@@ -73,88 +73,64 @@ jugada(X1,Y1,X2,Y2):-
   turno(negro),
   vacio(X2,Y2),
   comerReyNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco),
-  jugadaComp.
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugada(X1,Y1,X2,Y2):-
   reyNegro(X1,Y1),
   turno(negro),
   vacio(X2,Y2),
   moverReyNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco),
-  jugadaComp.
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugada(X1,Y1,X2,Y2):-
   reyBlanco(X1,Y1),
   turno(blanco),
   vacio(X2,Y2),
   comerReyBlanco(X1,Y1,X2,Y2), !,
-  retract(turno(blanco)),
-  assert(turno(negro)),
-  imprimirTablero,
-  imprimirJugador(negro),
-  jugadaComp.
+  write('Movimiento jugador 1:'), nl,
+  verificarGanadorBlanco.
 
 jugada(X1,Y1,X2,Y2):-
   reyBlanco(X1,Y1),
   turno(blanco),
   vacio(X2,Y2),
   moverReyBlanco(X1,Y1,X2,Y2), !,
-  retract(turno(blanco)),
-  assert(turno(negro)),
-  imprimirTablero,
-  imprimirJugador(negro),
-  jugadaComp.
+  write('Movimiento jugador 1:'), nl,
+  verificarGanadorBlanco.
 
 jugada(X1,Y1,X2,Y2):-
   blanco(X1,Y1),
   turno(blanco),
   vacio(X2,Y2),
   comerBlanco(X1,Y1,X2,Y2), !,
-  retract(turno(blanco)),
-  assert(turno(negro)),
-  imprimirTablero,
-  imprimirJugador(negro),
-  jugadaComp.
+  write('Movimiento jugador 1:'), nl,
+  verificarGanadorBlanco.
 
 jugada(X1,Y1,X2,Y2):-
   blanco(X1,Y1),
   turno(blanco),
   vacio(X2,Y2),
   moverBlanco(X1,Y1,X2,Y2), !,
-  retract(turno(blanco)),
-  assert(turno(negro)),
-  imprimirTablero,
-  imprimirJugador(negro),
-  jugadaComp.
+  write('Movimiento jugador 1:'), nl,
+  verificarGanadorBlanco.
 
 jugada(X1,Y1,X2,Y2):-
   negro(X1,Y1),
   turno(negro),
   vacio(X2,Y2),
   comerNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco),
-  jugadaComp.
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugada(X1,Y1,X2,Y2):-
   negro(X1,Y1),
   turno(negro),
   vacio(X2,Y2),
   moverNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco),
-  jugadaComp.
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugadaComp:-
   juega(computadora),
@@ -169,10 +145,8 @@ jugadaComp(X1,Y1,X2,Y2):-
   turno(negro),
   vacio(X2,Y2),
   comerReyNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco).
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugadaComp(X1,Y1,X2,Y2):-
   juega(computadora),
@@ -180,10 +154,8 @@ jugadaComp(X1,Y1,X2,Y2):-
   turno(negro),
   vacio(X2,Y2),
   moverReyNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco).
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugadaComp(X1,Y1,X2,Y2):-
   juega(computadora),
@@ -191,10 +163,8 @@ jugadaComp(X1,Y1,X2,Y2):-
   turno(negro),
   vacio(X2,Y2),
   comerNegro(X1,Y1,X2,Y2), !,
-  retract(turno(negro)),
-  assert(turno(blanco)),
-  imprimirTablero,
-  imprimirJugador(blanco).
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
 
 jugadaComp(X1,Y1,X2,Y2):-
   juega(computadora),
@@ -202,11 +172,36 @@ jugadaComp(X1,Y1,X2,Y2):-
   turno(negro),
   vacio(X2,Y2),
   moverNegro(X1,Y1,X2,Y2), !,
+  write('Movimiento jugador 2:'), nl,
+  verificarGanadorNegro.
+
+
+
+verificarGanadorNegro:-
+  (not(ganador(negro)),
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
-  imprimirJugador(blanco).
+  imprimirJugador(blanco),
+  jugadaComp);
+  (imprimirTablero,
+  write('Ha ganado el jugador 2!')).
 
+verificarGanadorBlanco:-
+  (not(ganador(blanco)),
+  retract(turno(blanco)),
+  assert(turno(negro)),
+  imprimirTablero,
+  imprimirJugador(negro),
+  jugadaComp);
+  (imprimirTablero,
+  write('Ha ganado el jugador 1!')).
+
+ganador(negro):-
+  not((blanco(X,Y), reyBlanco(Z,W))).
+
+ganador(blanco):-
+  not((negro(X,Y), reyBlanco(Z,W))).
 
 
 
