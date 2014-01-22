@@ -158,14 +158,57 @@ jugada(X1,Y1,X2,Y2):-
 
 jugadaComp:-
   juega(computadora),
-  jugada(X,Y,Z,W),
+  jugadaComp(X,Y,Z,W), !.
+
+jugadaComp:-
+  juega(humano).
+
+jugadaComp(X1,Y1,X2,Y2):-
+  juega(computadora),
+  reyNegro(X1,Y1),
+  turno(negro),
+  vacio(X2,Y2),
+  comerReyNegro(X1,Y1,X2,Y2), !,
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
   imprimirJugador(blanco).
 
-jugadaComp:-
-  juega(humano).
+jugadaComp(X1,Y1,X2,Y2):-
+  juega(computadora),
+  reyNegro(X1,Y1),
+  turno(negro),
+  vacio(X2,Y2),
+  moverReyNegro(X1,Y1,X2,Y2), !,
+  retract(turno(negro)),
+  assert(turno(blanco)),
+  imprimirTablero,
+  imprimirJugador(blanco).
+
+jugadaComp(X1,Y1,X2,Y2):-
+  juega(computadora),
+  negro(X1,Y1),
+  turno(negro),
+  vacio(X2,Y2),
+  comerNegro(X1,Y1,X2,Y2), !,
+  retract(turno(negro)),
+  assert(turno(blanco)),
+  imprimirTablero,
+  imprimirJugador(blanco).
+
+jugadaComp(X1,Y1,X2,Y2):-
+  juega(computadora),
+  negro(X1,Y1),
+  turno(negro),
+  vacio(X2,Y2),
+  moverNegro(X1,Y1,X2,Y2), !,
+  retract(turno(negro)),
+  assert(turno(blanco)),
+  imprimirTablero,
+  imprimirJugador(blanco).
+
+
+
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAD(X1,Y1,X2,Y2), !,
