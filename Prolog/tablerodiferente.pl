@@ -51,7 +51,7 @@ imprimirJugador(blanco):- write('Juega jugador 1'), nl, nl.
 imprimirJugador(negro):-  write('Juega jugador 2'), nl, nl.
 
 jugar:-
-  write('Desea jugar con la máquina? (s/n)?'),
+  write('Desea jugar con la máquina? (s/n)?'), nl,
   read(R),
   (((R = s,!,
   assert(juega(computadora)),
@@ -69,23 +69,15 @@ jugar:-
   imprimirJugador(blanco))).
 
 
-
-intentarJugarCompu:-
-  jugadaComputadora(1,1).
-
 jugadaComputadora(X,Y):-
+  reyNegro(X,Y),
+  vacio(Z,W),
   jugada(X,Y,Z,W), !.
 
 jugadaComputadora(X,Y):-
-  Y < 8,
-  YN is Y + 1,
-  jugadaComputadora(X,YN), !.
-
-jugadaComputadora(X,Y):-
-  X < 8,
-  YN is 1,
-  XN is X + 1,
-  jugadaComputadora(XN, YN), !.
+  negro(X,Y),
+  vacio(Z,W),
+  jugada(X,Y,Z,W), !.
 
 
 jugada(X1,Y1,X2,Y2):-
@@ -154,7 +146,7 @@ jugada(X1,Y1,X2,Y2):-
 
 jugadaComp:-
   juega(computadora),
-  intentarJugarCompu.
+  jugadaComputadora(_X,_Y).
 
 jugadaComp:-
   juega(humano).
@@ -204,16 +196,17 @@ verificarGanadorBlanco:-
   write('Ha ganado el jugador 1!').
 
 noGanador(negro):-
-  (blanco(X,Y); reyBlanco(Z,W)).
+  (blanco(_X,_Y); reyBlanco(_Z,_W)).
 
 noGanador(blanco):-
-  (negro(X,Y); reyBlanco(Z,W)).
+  (negro(_X,_Y); reyBlanco(_Z,_W)).
 
 
 seguirComiendoReyBlanco(X,Y):-
   juega(computadora),
   turno(negro),
-  comerReyBlanco(X,Y,Z,W).
+  vacio(Z,W),
+  comerReyBlanco(X,Y,Z,W), !.
 
 seguirComiendoReyBlanco(X,Y):-
   juega(computadora),
@@ -223,7 +216,7 @@ seguirComiendoReyBlanco(X,Y):-
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
-  comerReyBlanco(X,Y,XN,YN).
+  comerReyBlanco(X,Y,XN,YN), !.
 
 seguirComiendoReyBlanco(X,Y):-
   juega(humano),
@@ -232,9 +225,10 @@ seguirComiendoReyBlanco(X,Y):-
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
-  comerReyBlanco(X,Y,XN,YN).
+  comerReyBlanco(X,Y,XN,YN), !.
 
-seguirComiendoReyBlanco(X,Y).
+seguirComiendoReyBlanco(_X,_Y):- !.
+  
 
 puedoSeguirComiendoReyBlanco(X,Y):-
   XA is X - 2,
@@ -334,7 +328,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
 seguirComiendoReyNegro(X,Y):-
   juega(computadora),
   turno(negro),
-  comerReyNegro(X,Y,Z,W).
+  vacio(Z,W),
+  comerReyNegro(X,Y,Z,W), !.
 
 seguirComiendoReyNegro(X,Y):-
   juega(humano),
@@ -343,9 +338,9 @@ seguirComiendoReyNegro(X,Y):-
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
-  comerReyNegro(X,Y,XN,YN).
+  comerReyNegro(X,Y,XN,YN), !.
 
-seguirComiendoReyNegro(X,Y).
+seguirComiendoReyNegro(_X,_Y):- !.
 
 puedoSeguirComiendoReyNegro(X,Y):-
   XA is X - 2,
@@ -705,7 +700,8 @@ validoMoverReyNegroDI(X1,Y1,X2,Y2):-
 seguirComiendoBlanco(X,Y):-
   juega(computadora),
   turno(negro),
-  comerBlanco(X,Y,Z,W).
+  vacio(Z,W),
+  comerBlanco(X,Y,Z,W), !.
 
 seguirComiendoBlanco(X,Y):-
   juega(computadora),
@@ -715,7 +711,7 @@ seguirComiendoBlanco(X,Y):-
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
-  comerBlanco(X,Y,XN,YN).
+  comerBlanco(X,Y,XN,YN), !.
 
 seguirComiendoBlanco(X,Y):-
   juega(humano),
@@ -724,9 +720,9 @@ seguirComiendoBlanco(X,Y):-
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
-  comerBlanco(X,Y,XN,YN).
+  comerBlanco(X,Y,XN,YN), !.
 
-seguirComiendoBlanco(X,Y).
+seguirComiendoBlanco(_X,_Y):- !.
 
 puedoSeguirComiendoBlanco(X,Y):-
   XA is X - 2,
@@ -917,6 +913,7 @@ comerBlanco(X1,Y1,X2,Y2):-
 seguirComiendoNegro(X,Y):-
   juega(computadora),
   turno(negro),
+  vacio(Z,W),
   comerNegro(X,Y,Z,W), !.
 
 seguirComiendoNegro(X,Y):-
@@ -928,7 +925,7 @@ seguirComiendoNegro(X,Y):-
   read(YN),
   comerNegro(X,Y,XN,YN), !.
 
-seguirComiendoNegro(X,Y).
+seguirComiendoNegro(_X,_Y):- !.
 
 puedoSeguirComiendoNegro(X,Y):-
   XA is X - 2,
