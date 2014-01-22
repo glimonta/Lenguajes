@@ -42,8 +42,8 @@ inicializarTablero:-
   assert(vacio(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(vacio(2,5)), assert(vacio(2,6)), assert(vacio(2,7)), assert(vacio(2,8)),
   assert(vacio(3,1)), assert(negro(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
   assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(vacio(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
-  assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
-  assert(negro(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
+  assert(vacio(5,1)), assert(negro(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
+  assert(vacio(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
   assert(vacio(7,1)), assert(vacio(7,2)), assert(vacio(7,3)), assert(vacio(7,4)), assert(vacio(7,5)), assert(vacio(7,6)), assert(vacio(7,7)), assert(vacio(7,8)),
   assert(vacio(8,1)), assert(vacio(8,2)), assert(vacio(8,3)), assert(vacio(8,4)), assert(vacio(8,5)), assert(vacio(8,6)), assert(vacio(8,7)), assert(vacio(8,8)).
 
@@ -215,6 +215,7 @@ seguirComiendoReyBlanco(X,Y):-
 
 seguirComiendoReyBlanco(X,Y):-
   juega(humano),
+  imprimirTablero,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -239,7 +240,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyDD(X1,Y1,X2,Y2), !,
@@ -259,7 +261,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 
 comerReyBlanco(X1,Y1,X2,Y2):-
@@ -270,7 +273,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoPeonAI(X1,Y1,X2,Y2), !,
@@ -280,7 +284,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoPeonDD(X1,Y1,X2,Y2), !,
@@ -290,7 +295,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoPeonDI(X1,Y1,X2,Y2), !,
@@ -300,7 +306,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 seguirComiendoReyNegro(X,Y):-
   juega(computadora),
@@ -308,6 +315,7 @@ seguirComiendoReyNegro(X,Y):-
 
 seguirComiendoReyNegro(X,Y):-
   juega(humano),
+  imprimirTablero,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -322,7 +330,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroReyAI(X1,Y1,X2,Y2), !,
@@ -332,7 +341,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroReyDD(X1,Y1,X2,Y2), !,
@@ -342,7 +352,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroReyDI(X1,Y1,X2,Y2), !,
@@ -352,7 +363,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 
 comerReyNegro(X1,Y1,X2,Y2):-
@@ -363,7 +375,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroPeonAI(X1,Y1,X2,Y2), !,
@@ -373,7 +386,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroPeonDD(X1,Y1,X2,Y2), !,
@@ -393,7 +407,8 @@ comerReyNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyNegro(X2,Y2).
 
 
 validoComerReyBlancoReyAD(X1,Y1,X2,Y2):-
@@ -661,6 +676,7 @@ seguirComiendoBlanco(X,Y):-
 
 seguirComiendoBlanco(X,Y):-
   juega(humano),
+  imprimirTablero,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -674,7 +690,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyAI(X1,Y1,X2,Y2), !,
@@ -684,7 +701,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyDD(X1,Y1,X2,Y2), !,
@@ -694,7 +712,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyDI(X1,Y1,X2,Y2), !,
@@ -704,7 +723,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 
 comerBlanco(X1,Y1,8,Y2):-
@@ -715,7 +735,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonAI(X1,Y1,X2,Y2), !,
@@ -725,7 +746,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonDD(X1,Y1,X2,Y2), !,
@@ -735,7 +757,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonDI(X1,Y1,X2,Y2), !,
@@ -745,7 +768,8 @@ comerBlanco(X1,Y1,8,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyAD(X1,Y1,X2,Y2), !,
@@ -755,7 +779,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyAI(X1,Y1,X2,Y2), !,
@@ -765,7 +790,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyDD(X1,Y1,X2,Y2), !,
@@ -775,7 +801,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyDI(X1,Y1,X2,Y2), !,
@@ -785,7 +812,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 
 comerBlanco(X1,Y1,X2,Y2):-
@@ -796,7 +824,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonAI(X1,Y1,X2,Y2), !,
@@ -806,7 +835,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonDD(X1,Y1,X2,Y2), !,
@@ -816,7 +846,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonDI(X1,Y1,X2,Y2), !,
@@ -826,7 +857,8 @@ comerBlanco(X1,Y1,X2,Y2):-
   retract(negro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoBlanco(X2,Y2).
 
 
 seguirComiendoNegro(X,Y):-
@@ -835,6 +867,7 @@ seguirComiendoNegro(X,Y):-
 
 seguirComiendoNegro(X,Y):-
   juega(humano),
+  imprimirTablero,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -849,7 +882,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyAI(X1,Y1,X2,Y2), !,
@@ -859,7 +893,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyDD(X1,Y1,X2,Y2), !,
@@ -869,7 +904,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyDI(X1,Y1,X2,Y2), !,
@@ -879,7 +915,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 
 comerNegro(X1,Y1,1,Y2):-
@@ -890,7 +927,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonAI(X1,Y1,X2,Y2), !,
@@ -900,7 +938,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonDD(X1,Y1,X2,Y2), !,
@@ -910,7 +949,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonDI(X1,Y1,X2,Y2), !,
@@ -920,7 +960,8 @@ comerNegro(X1,Y1,1,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyNegro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 
 comerNegro(X1,Y1,X2,Y2):-
@@ -931,7 +972,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyAI(X1,Y1,X2,Y2), !,
@@ -941,7 +983,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyDD(X1,Y1,X2,Y2), !,
@@ -951,7 +994,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyDI(X1,Y1,X2,Y2), !,
@@ -961,7 +1005,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(reyBlanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 
 comerNegro(X1,Y1,X2,Y2):-
@@ -972,7 +1017,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonAI(X1,Y1,X2,Y2), !,
@@ -982,7 +1028,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonDD(X1,Y1,X2,Y2), !,
@@ -992,7 +1039,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonDI(X1,Y1,X2,Y2), !,
@@ -1002,7 +1050,8 @@ comerNegro(X1,Y1,X2,Y2):-
   retract(blanco(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoNegro(X2,Y2).
 
 
 validoComerBlancoReyAD(X1,Y1,X2,Y2):-
