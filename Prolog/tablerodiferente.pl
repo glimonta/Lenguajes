@@ -34,7 +34,7 @@ imprimirCasilla(X,Y):-
   write(' |<<|').
 
 imprimirCasilla(X,Y):-
-  rey_blanco(X,Y), !,
+  reyBlanco(X,Y), !,
   write(' |>>|').
 
 inicializarTablero:-
@@ -46,9 +46,6 @@ inicializarTablero:-
   assert(negro(6,1)), assert(vacio(6,2)), assert(negro(6,3)), assert(vacio(6,4)), assert(negro(6,5)), assert(vacio(6,6)), assert(negro(6,7)), assert(vacio(6,8)),
   assert(vacio(7,1)), assert(negro(7,2)), assert(vacio(7,3)), assert(negro(7,4)), assert(vacio(7,5)), assert(negro(7,6)), assert(vacio(7,7)), assert(negro(7,8)),
   assert(negro(8,1)), assert(vacio(8,2)), assert(negro(8,3)), assert(vacio(8,4)), assert(negro(8,5)), assert(vacio(8,6)), assert(negro(8,7)), assert(vacio(8,8)).
-
-proximoJugador(blanco, negro).
-proximoJugador(negro, blanco).
 
 imprimirJugador(blanco):- write('Juega jugador 1'), nl, nl.
 imprimirJugador(negro):-  write('Juega jugador 2'), nl, nl.
