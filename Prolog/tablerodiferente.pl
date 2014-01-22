@@ -469,10 +469,12 @@ moverReyNegro(X1,Y1,X2,Y2):-
 
 vaciosDiagonalAD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =:= HastaX,
+  DesdeY =:= HastaY,
   vacio(DesdeX, DesdeY), !.
 
 vaciosDiagonalAD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =\= HastaX,
+  DesdeY =\= HastaY,
   vacio(DesdeX,DesdeY),
   NuevoX is DesdeX - 1,
   NuevoY is DesdeY + 1,
@@ -481,10 +483,12 @@ vaciosDiagonalAD(DesdeX, DesdeY, HastaX, HastaY):-
 
 vaciosDiagonalAI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =:= HastaX,
+  DesdeY =:= HastaY,
   vacio(DesdeX, DesdeY), !.
 
 vaciosDiagonalAI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =\= HastaX,
+  DesdeY =\= HastaY,
   vacio(DesdeX,DesdeY),
   NuevoX is DesdeX - 1,
   NuevoY is DesdeY - 1,
@@ -493,6 +497,7 @@ vaciosDiagonalAI(DesdeX, DesdeY, HastaX, HastaY):-
 
 vaciosDiagonalDD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =:= HastaX,
+  DesdeY =:= HastaY,
   vacio(DesdeX, DesdeY), !.
 
 vaciosDiagonalDD(DesdeX, DesdeY, HastaX, HastaY):-
@@ -505,6 +510,7 @@ vaciosDiagonalDD(DesdeX, DesdeY, HastaX, HastaY):-
 
 vaciosDiagonalDI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =:= HastaX,
+  DesdeY =:= HastaY,
   vacio(DesdeX, DesdeY), !.
 
 vaciosDiagonalDI(DesdeX, DesdeY, HastaX, HastaY):-
