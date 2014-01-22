@@ -157,7 +157,7 @@ jugada(X1,Y1,X2,Y2):-
   jugadaComp.
 
 jugadaComp:-
-  juega(computadora), !,
+  juega(computadora),
   jugada(X,Y,Z,W),
   retract(turno(negro)),
   assert(turno(blanco)),
