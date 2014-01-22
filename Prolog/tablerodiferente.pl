@@ -310,25 +310,25 @@ comerReyNegro(X1,Y1,X2,Y2):-
 validoComerReyBlancoReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   reyNegro(X,Y).
 
-validoComerReyBlancoAD(X1,Y1,X2,Y2):-
+validoComerReyBlancoPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   negro(X,Y).
 
 validoComerReyBlancoReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   reyNegro(X,Y).
 
 validoComerReyBlancoPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   negro(X,Y).
 
 validoComerReyBlancoReyDD(X1,Y1,X2,Y2):-
@@ -346,37 +346,37 @@ validoComerReyBlancoPeonDD(X1,Y1,X2,Y2):-
 validoComerReyBlancoReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   reyNegro(X,Y).
 
 validoComerReyBlancoPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   negro(X,Y).
 
 validoComerReyNegroReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   blanco(X,Y).
 
 validoComerReyNegroReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 - 1,
   blanco(X,Y).
 
 validoComerReyNegroReyDD(X1,Y1,X2,Y2):-
@@ -394,13 +394,13 @@ validoComerReyNegroPeonDD(X1,Y1,X2,Y2):-
 validoComerReyNegroReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 + 1, Y is Y1 - 1,
   blanco(X,Y).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
