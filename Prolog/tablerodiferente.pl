@@ -43,7 +43,7 @@ inicializarTablero:-
   assert(vacio(3,1)), assert(negro(3,2)), assert(vacio(3,3)), assert(vacio(3,4)), assert(vacio(3,5)), assert(vacio(3,6)), assert(vacio(3,7)), assert(vacio(3,8)),
   assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(vacio(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
   assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
-  assert(vacio(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
+  assert(negro(6,1)), assert(vacio(6,2)), assert(vacio(6,3)), assert(vacio(6,4)), assert(vacio(6,5)), assert(vacio(6,6)), assert(vacio(6,7)), assert(vacio(6,8)),
   assert(vacio(7,1)), assert(vacio(7,2)), assert(vacio(7,3)), assert(vacio(7,4)), assert(vacio(7,5)), assert(vacio(7,6)), assert(vacio(7,7)), assert(vacio(7,8)),
   assert(vacio(8,1)), assert(vacio(8,2)), assert(vacio(8,3)), assert(vacio(8,4)), assert(vacio(8,5)), assert(vacio(8,6)), assert(vacio(8,7)), assert(vacio(8,8)).
 
@@ -178,32 +178,47 @@ jugadaComp(X1,Y1,X2,Y2):-
 
 
 verificarGanadorNegro:-
-  (not(ganador(negro)),
+  noGanador(negro),
   retract(turno(negro)),
   assert(turno(blanco)),
   imprimirTablero,
   imprimirJugador(blanco),
-  jugadaComp);
-  (imprimirTablero,
-  write('Ha ganado el jugador 2!')).
+  jugadaComp.
+
+verificarGanadorNegro:-
+  imprimirTablero,
+  write('Ha ganado el jugador 2!').
 
 verificarGanadorBlanco:-
-  (not(ganador(blanco)),
+  noGanador(blanco),
   retract(turno(blanco)),
   assert(turno(negro)),
   imprimirTablero,
   imprimirJugador(negro),
-  jugadaComp);
-  (imprimirTablero,
-  write('Ha ganado el jugador 1!')).
+  jugadaComp.
 
-ganador(negro):-
-  not((blanco(X,Y), reyBlanco(Z,W))).
+verificarGanadorBlanco:-
+  imprimirTablero,
+  write('Ha ganado el jugador 1!').
 
-ganador(blanco):-
-  not((negro(X,Y), reyBlanco(Z,W))).
+noGanador(negro):-
+  (blanco(X,Y); reyBlanco(Z,W)).
+
+noGanador(blanco):-
+  (negro(X,Y); reyBlanco(Z,W)).
 
 
+
+seguirComiendoReyBlanco(X,Y):-
+  juega(computadora),
+  comerReyBlanco(X,Y,Z,W).
+
+seguirComiendoReyBlanco(X,Y):-
+  juega(humano),
+  write('A que posición desea moverse? (X.Y.):'), nl,
+  read(XN),
+  read(YN),
+  comerReyBlanco(X,Y,XN,YN).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAD(X1,Y1,X2,Y2), !,
@@ -213,7 +228,8 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   retract(reyNegro(XE,YE)),
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
-  assert(vacio(XE,YE)).
+  assert(vacio(XE,YE)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAI(X1,Y1,X2,Y2), !,
@@ -285,6 +301,17 @@ comerReyBlanco(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyBlanco(X2,Y2)),
   assert(vacio(XE,YE)).
+
+seguirComiendoReyNegro(X,Y):-
+  juega(computadora),
+  comerReyNegro(X,Y,Z,W).
+
+seguirComiendoReyNegro(X,Y):-
+  juega(humano),
+  write('A que posición desea moverse? (X.Y.):'), nl,
+  read(XN),
+  read(YN),
+  comerReyNegro(X,Y,XN,YN).
 
 
 comerReyNegro(X1,Y1,X2,Y2):-
@@ -628,6 +655,17 @@ validoMoverReyNegroDI(X1,Y1,X2,Y2):-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+seguirComiendoBlanco(X,Y):-
+  juega(computadora),
+  comerBlanco(X,Y,Z,W).
+
+seguirComiendoBlanco(X,Y):-
+  juega(humano),
+  write('A que posición desea moverse? (X.Y.):'), nl,
+  read(XN),
+  read(YN),
+  comerBlanco(X,Y,XN,YN).
+
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyAD(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -789,6 +827,18 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)),
   assert(vacio(XE,YE)).
+
+
+seguirComiendoNegro(X,Y):-
+  juega(computadora),
+  comerNegro(X,Y,Z,W).
+
+seguirComiendoNegro(X,Y):-
+  juega(humano),
+  write('A que posición desea moverse? (X.Y.):'), nl,
+  read(XN),
+  read(YN),
+  comerNegro(X,Y,XN,YN).
 
 
 comerNegro(X1,Y1,1,Y2):-
