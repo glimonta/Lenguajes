@@ -212,15 +212,36 @@ noGanador(blanco):-
 
 seguirComiendoReyBlanco(X,Y):-
   juega(computadora),
+  turno(negro),
   comerReyBlanco(X,Y,Z,W).
 
 seguirComiendoReyBlanco(X,Y):-
-  juega(humano),
+  juega(computadora),
+  turno(blanco),
   imprimirTablero,
+  puedoSeguirComiendoReyBlanco(X,Y),
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
   comerReyBlanco(X,Y,XN,YN).
+
+seguirComiendoReyBlanco(X,Y):-
+  juega(humano),
+  imprimirTablero,
+  puedoSeguirComiendoReyBlanco(X,Y),
+  write('A que posición desea moverse? (X.Y.):'), nl,
+  read(XN),
+  read(YN),
+  comerReyBlanco(X,Y,XN,YN).
+
+seguirComiendoReyBlanco(X,Y).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XA is X - 2,
+  XD is X + 2,
+  YI is Y - 2,
+  YD is Y + 2,
+  (validoComerReyBlancoReyAD(X,Y,XA,XD);validoComerReyBlancoReyAI(X,Y,XA,YI);validoComerReyBlancoReyDD(X,Y,XD,YD);validoComerReyBlancoReyDI(X,Y,XD,YI);validoComerReyBlancoPeonAD(X,Y,XA,YD);validoComerReyBlancoPeonAI(X,Y,XA,YI);validoComerReyBlancoPeonDD(X,Y,XD,YD);validoComerReyBlancoPeonDI(X,Y,XD,YI)).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAD(X1,Y1,X2,Y2), !,
@@ -312,16 +333,26 @@ comerReyBlanco(X1,Y1,X2,Y2):-
 
 seguirComiendoReyNegro(X,Y):-
   juega(computadora),
+  turno(negro),
   comerReyNegro(X,Y,Z,W).
 
 seguirComiendoReyNegro(X,Y):-
   juega(humano),
   imprimirTablero,
+  seguirComiendoReyNegro(X,Y),
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
   comerReyNegro(X,Y,XN,YN).
 
+seguirComiendoReyNegro(X,Y).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XA is X - 2,
+  XD is X + 2,
+  YI is Y - 2,
+  YD is Y + 2,
+  (validoComerReynegroReyAD(X,Y,XA,XD);validoComerReynegroReyAI(X,Y,XA,YI);validoComerReynegroReyDD(X,Y,XD,YD);validoComerReynegroReyDI(X,Y,XD,YI);validoComerReynegroPeonAD(X,Y,XA,YD);validoComerReynegroPeonAI(X,Y,XA,YI);validoComerReynegroPeonDD(X,Y,XD,YD);validoComerReynegroPeonDI(X,Y,XD,YI)).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroReyAD(X1,Y1,X2,Y2), !,
@@ -673,15 +704,36 @@ validoMoverReyNegroDI(X1,Y1,X2,Y2):-
 
 seguirComiendoBlanco(X,Y):-
   juega(computadora),
+  turno(negro),
   comerBlanco(X,Y,Z,W).
 
 seguirComiendoBlanco(X,Y):-
-  juega(humano),
+  juega(computadora),
+  turno(blanco),
   imprimirTablero,
+  puedoSeguirComiendoBlanco(X,Y),
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
   comerBlanco(X,Y,XN,YN).
+
+seguirComiendoBlanco(X,Y):-
+  juega(humano),
+  imprimirTablero,
+  puedoSeguirComiendoBlanco(X,Y),
+  write('A que posición desea moverse? (X.Y.):'), nl,
+  read(XN),
+  read(YN),
+  comerBlanco(X,Y,XN,YN).
+
+seguirComiendoBlanco(X,Y).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XA is X - 2,
+  XD is X + 2,
+  YI is Y - 2,
+  YD is Y + 2,
+  (validoComerBlancoReyAD(X,Y,XA,XD);validoComerBlancoReyAI(X,Y,XA,YI);validoComerBlancoReyDD(X,Y,XD,YD);validoComerBlancoReyDI(X,Y,XD,YI);validoComerBlancoPeonAD(X,Y,XA,YD);validoComerBlancoPeonAI(X,Y,XA,YI);validoComerBlancoPeonDD(X,Y,XD,YD);validoComerBlancoPeonDI(X,Y,XD,YI)).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyAD(X1,Y1,8,Y2), !,
@@ -864,16 +916,26 @@ comerBlanco(X1,Y1,X2,Y2):-
 
 seguirComiendoNegro(X,Y):-
   juega(computadora),
-  comerNegro(X,Y,Z,W).
+  turno(negro),
+  comerNegro(X,Y,Z,W), !.
 
 seguirComiendoNegro(X,Y):-
   juega(humano),
   imprimirTablero,
+  puedoSeguirComiendoNegro(X,Y),
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
-  comerNegro(X,Y,XN,YN).
+  comerNegro(X,Y,XN,YN), !.
 
+seguirComiendoNegro(X,Y).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XA is X - 2,
+  XD is X + 2,
+  YI is Y - 2,
+  YD is Y + 2,
+  (validoComerNegroReyAD(X,Y,XA,XD);validoComerNegroReyAI(X,Y,XA,YI);validoComerNegroReyDD(X,Y,XD,YD);validoComerNegroReyDI(X,Y,XD,YI);validoComerNegroPeonAD(X,Y,XA,YD);validoComerNegroPeonAI(X,Y,XA,YI);validoComerNegroPeonDD(X,Y,XD,YD);validoComerNegroPeonDI(X,Y,XD,YI)).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyAD(X1,Y1,1,Y2), !,
@@ -1306,26 +1368,3 @@ validoMoverNegroDI(X1,Y1,X2,Y2):-
   X2 is X1 + 1,
   Y2 is Y1 - 1,
   vacio(X2,Y2).
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIXME CASOS BORDE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIXME CAMBIO TURNO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIXME CONDICION GANAR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIXME SEGUIR JUGANDO DESPUES DE COMER %%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
