@@ -213,8 +213,10 @@ seguirComiendoReyBlanco(X,Y):-
   turno(blanco),
   imprimirTablero,
   puedoSeguirComiendoReyBlanco(X,Y), !,
-  write('A que posición desea moverse? (X.Y.):'), nl,
+  write('A que posición desea moverse?'), nl,
+  write('X ='), nl,
   read(XN),
+  write('Y'), nl,
   read(YN),
   comerReyBlanco(X,Y,XN,YN), !.
 
@@ -222,13 +224,14 @@ seguirComiendoReyBlanco(X,Y):-
   juega(humano),
   imprimirTablero,
   puedoSeguirComiendoReyBlanco(X,Y), !,
-  write('A que posición desea moverse? (X.Y.):'), nl,
+  write('A que posición desea moverse?'), nl,
+  write('X ='), nl,
   read(XN),
+  write('Y'), nl,
   read(YN),
   comerReyBlanco(X,Y,XN,YN), !.
 
 seguirComiendoReyBlanco(_X,_Y):- !.
-  
 
 puedoSeguirComiendoReyBlanco(X,Y):-
   XA is X - 2,
@@ -368,8 +371,10 @@ seguirComiendoReyNegro(X,Y):-
   juega(humano),
   imprimirTablero,
   puedoSeguirComiendoReyNegro(X,Y), !,
-  write('A que posición desea moverse? (X.Y.):'), nl,
+  write('A que posición desea moverse?'), nl,
+  write('X ='), nl,
   read(XN),
+  write('Y ='), nl,
   read(YN),
   comerReyNegro(X,Y,XN,YN), !.
 
@@ -623,28 +628,32 @@ moverReyBlanco(X1,Y1,X2,Y2):-
   retract(reyBlanco(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
+  assert(reyBlanco(X2,Y2)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 moverReyBlanco(X1,Y1,X2,Y2):-
   validoMoverReyBlancoAI(X1,Y1,X2,Y2), !,
   retract(reyBlanco(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
+  assert(reyBlanco(X2,Y2)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 moverReyBlanco(X1,Y1,X2,Y2):-
   validoMoverReyBlancoDD(X1,Y1,X2,Y2), !,
   retract(reyBlanco(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
+  assert(reyBlanco(X2,Y2)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 moverReyBlanco(X1,Y1,X2,Y2):-
   validoMoverReyBlancoDI(X1,Y1,X2,Y2), !,
   retract(reyBlanco(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyBlanco(X2,Y2)).
+  assert(reyBlanco(X2,Y2)),
+  seguirComiendoReyBlanco(X2,Y2).
 
 
 moverReyNegro(X1,Y1,X2,Y2):-
@@ -652,130 +661,187 @@ moverReyNegro(X1,Y1,X2,Y2):-
   retract(reyNegro(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(X2,Y2)),
+  seguirComiendoReyNegro(X2,Y2).
 
 moverReyNegro(X1,Y1,X2,Y2):-
   validoMoverReyNegroAI(X1,Y1,X2,Y2), !,
   retract(reyNegro(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(X2,Y2)),
+  seguirComiendoReyNegro(X2,Y2).
 
 moverReyNegro(X1,Y1,X2,Y2):-
   validoMoverReyNegroDD(X1,Y1,X2,Y2), !,
   retract(reyNegro(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(X2,Y2)),
+  seguirComiendoReyNegro(X2,Y2).
 
 moverReyNegro(X1,Y1,X2,Y2):-
   validoMoverReyNegroDI(X1,Y1,X2,Y2), !,
   retract(reyNegro(X1,Y1)),
   retract(vacio(X2,Y2)),
   assert(vacio(X1,Y1)),
-  assert(reyNegro(X2,Y2)).
+  assert(reyNegro(X2,Y2)),
+  seguirComiendoReyNegro(X2,Y2).
 
-
-vaciosDiagonalAD(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoAD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX is HastaX,
   DesdeY is HastaY,
   vacio(DesdeX, DesdeY), !.
 
-vaciosDiagonalAD(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoAD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =\= HastaX,
   DesdeY =\= HastaY,
   vacio(DesdeX,DesdeY),
   NuevoX is DesdeX - 1,
   NuevoY is DesdeY + 1,
-  vaciosDiagonalAD(NuevoX, NuevoY, HastaX, HastaY).
+  vaciosDiagonalReyBlancoAD(NuevoX, NuevoY, HastaX, HastaY).
 
 
-vaciosDiagonalAI(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoAI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX is HastaX,
   DesdeY is HastaY,
   vacio(DesdeX, DesdeY), !.
 
-vaciosDiagonalAI(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoAI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =\= HastaX,
   DesdeY =\= HastaY,
   vacio(DesdeX,DesdeY),
   NuevoX is DesdeX - 1,
   NuevoY is DesdeY - 1,
-  vaciosDiagonalAD(NuevoX, NuevoY, HastaX, HastaY).
+  vaciosDiagonalReyBlancoAI(NuevoX, NuevoY, HastaX, HastaY).
 
 
-vaciosDiagonalDD(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoDD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX is HastaX,
   DesdeY is HastaY,
   vacio(DesdeX, DesdeY), !.
 
-vaciosDiagonalDD(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoDD(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =\= HastaX,
   vacio(DesdeX,DesdeY),
   NuevoX is DesdeX + 1,
   NuevoY is DesdeY + 1,
-  vaciosDiagonalAD(NuevoX, NuevoY, HastaX, HastaY).
+  vaciosDiagonalReyBlancoDD(NuevoX, NuevoY, HastaX, HastaY).
 
 
-vaciosDiagonalDI(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoDI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX is HastaX,
   DesdeY is HastaY,
   vacio(DesdeX, DesdeY), !.
 
-vaciosDiagonalDI(DesdeX, DesdeY, HastaX, HastaY):-
+vaciosDiagonalReyBlancoDI(DesdeX, DesdeY, HastaX, HastaY):-
   DesdeX =\= HastaX,
   vacio(DesdeX,DesdeY),
   NuevoX is DesdeX + 1,
   NuevoY is DesdeY - 1,
-  vaciosDiagonalAD(NuevoX, NuevoY, HastaX, HastaY).
+  vaciosDiagonalReyBlancoDI(NuevoX, NuevoY, HastaX, HastaY).
+
+
+vaciosDiagonalReyNegroAD(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX is HastaX,
+  DesdeY is HastaY,
+  vacio(DesdeX, DesdeY), !.
+
+vaciosDiagonalReyNegroAD(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX =\= HastaX,
+  DesdeY =\= HastaY,
+  vacio(DesdeX,DesdeY),
+  NuevoX is DesdeX - 1,
+  NuevoY is DesdeY + 1,
+  vaciosDiagonalReyNegroAD(NuevoX, NuevoY, HastaX, HastaY).
+
+
+vaciosDiagonalReyNegroAI(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX is HastaX,
+  DesdeY is HastaY,
+  vacio(DesdeX, DesdeY), !.
+
+vaciosDiagonalReyNegroAI(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX =\= HastaX,
+  DesdeY =\= HastaY,
+  vacio(DesdeX,DesdeY),
+  NuevoX is DesdeX - 1,
+  NuevoY is DesdeY - 1,
+  vaciosDiagonalReyNegroAI(NuevoX, NuevoY, HastaX, HastaY).
+
+
+vaciosDiagonalReyNegroDD(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX is HastaX,
+  DesdeY is HastaY,
+  vacio(DesdeX, DesdeY), !.
+
+vaciosDiagonalReyNegroDD(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX =\= HastaX,
+  vacio(DesdeX,DesdeY),
+  NuevoX is DesdeX + 1,
+  NuevoY is DesdeY + 1,
+  vaciosDiagonalReyNegroDD(NuevoX, NuevoY, HastaX, HastaY).
+
+
+vaciosDiagonalReyNegroDI(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX is HastaX,
+  DesdeY is HastaY,
+  vacio(DesdeX, DesdeY), !.
+
+vaciosDiagonalReyNegroDI(DesdeX, DesdeY, HastaX, HastaY):-
+  DesdeX =\= HastaX,
+  vacio(DesdeX,DesdeY),
+  NuevoX is DesdeX + 1,
+  NuevoY is DesdeY - 1,
+  vaciosDiagonalReyNegroDI(NuevoX, NuevoY, HastaX, HastaY).
 
 validoMoverReyBlancoAD(X1,Y1,X2,Y2):-
   X2 is X1 - (X1 - X2),
   Y2 is Y1 + (Y2 - Y1),
   X is X1 - 1, Y is Y1 + 1,
-  vaciosDiagonalAD(X,Y,X2,Y2).
+  vaciosDiagonalReyBlancoAD(X,Y,X2,Y2).
 
 validoMoverReyBlancoAI(X1,Y1,X2,Y2):-
   X2 is X1 - (X1 - X2),
   Y2 is Y1 - (Y1 - Y2),
   X is X1 - 1, Y is Y1 - 1,
-  vaciosDiagonalAI(X,Y,X2,Y2).
+  vaciosDiagonalReyBlancoAI(X,Y,X2,Y2).
 
 validoMoverReyBlancoDD(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
   Y2 is Y1 + (Y2 - Y1),
   X is X1 + 1, Y is Y1 + 1,
-  vaciosDiagonalDD(X,Y,X2,Y2).
+  vaciosDiagonalReyBlancoDD(X,Y,X2,Y2).
 
 validoMoverReyBlancoDI(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
   Y2 is Y1 - (Y1 - Y2),
   X is X1 + 1, Y is Y1 - 1,
-  vaciosDiagonalDI(X,Y,X2,Y2).
+  vaciosDiagonalReyBlancoDI(X,Y,X2,Y2).
 
 validoMoverReyNegroAD(X1,Y1,X2,Y2):-
   X2 is X1 - (X1 - X2),
   Y2 is Y1 + (Y2 - Y1),
   X is X1 - 1, Y is Y1 + 1,
-  vaciosDiagonalAD(X,Y,X2,Y2).
+  vaciosDiagonalReyNegroAD(X,Y,X2,Y2).
 
 validoMoverReyNegroAI(X1,Y1,X2,Y2):-
   X2 is X1 - (X1 - X2),
   Y2 is Y1 - (Y1 - Y2),
   X is X1 - 1, Y is Y1 - 1,
-  vaciosDiagonalAI(X,Y,X2,Y2).
+  vaciosDiagonalReyNegroAI(X,Y,X2,Y2).
 
 validoMoverReyNegroDD(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
   Y2 is Y1 + (Y2 - Y1),
   X is X1 + 1, Y is Y1 + 1,
-  vaciosDiagonalDD(X,Y,X2,Y2).
+  vaciosDiagonalReyNegroDD(X,Y,X2,Y2).
 
 validoMoverReyNegroDI(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
   Y2 is Y1 - (Y1 - Y2),
   X is X1 + 1, Y is Y1 - 1,
-  vaciosDiagonalDI(X,Y,X2,Y2).
+  vaciosDiagonalReyNegroDI(X,Y,X2,Y2).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -790,8 +856,10 @@ seguirComiendoBlanco(X,Y):-
   turno(blanco),
   imprimirTablero,
   puedoSeguirComiendoBlanco(X,Y), !,
-  write('A que posición desea moverse? (X.Y.):'), nl,
+  write('A que posición desea moverse?'), nl,
+  write('X ='), nl,
   read(XN),
+  write('Y ='), nl,
   read(YN),
   comerBlanco(X,Y,XN,YN), !.
 
@@ -799,8 +867,10 @@ seguirComiendoBlanco(X,Y):-
   juega(humano),
   imprimirTablero,
   puedoSeguirComiendoBlanco(X,Y), !,
-  write('A que posición desea moverse? (X.Y.):'), nl,
+  write('A que posición desea moverse?'), nl,
+  write('X ='), nl,
   read(XN),
+  write('Y ='), nl,
   read(YN),
   comerBlanco(X,Y,XN,YN), !.
 
@@ -1035,8 +1105,10 @@ seguirComiendoNegro(X,Y):-
   juega(humano),
   imprimirTablero,
   puedoSeguirComiendoNegro(X,Y), !,
-  write('A que posición desea moverse? (X.Y.):'), nl,
+  write('A que posición desea moverse?'), nl,
+  write('X ='), nl,
   read(XN),
+  write('Y ='), nl,
   read(YN),
   comerNegro(X,Y,XN,YN), !.
 
