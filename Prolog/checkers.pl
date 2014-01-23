@@ -1055,6 +1055,9 @@ validoMoverReyNegroDI(X1,Y1,X2,Y2):-
   X is X1 + 1, Y is Y1 - 1,
   vaciosDiagonalReyNegroDI(X,Y,X2,Y2).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Movimientos de comida de los Peones %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Si se puede seguir comiendo con el blanco al estar jugando contra la computadora y es el
 % turno del jugador 1 se le pregunta al usuario a donde quiere mover su ficha para continuar comiendo.
@@ -1134,6 +1137,10 @@ puedoSeguirComiendoBlanco(X,Y):-
   YI is Y - 2,
   validoComerBlancoPeonDI(X,Y,XD,YI).
 
+% Si es valido comer con el blanco a otro rey en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca un rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyAD(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1145,6 +1152,10 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyAI(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1156,6 +1167,10 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyDD(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1167,6 +1182,10 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyDI(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1179,6 +1198,10 @@ comerBlanco(X1,Y1,8,Y2):-
   seguirComiendoBlanco(8,Y2).
 
 
+% Si es valido comer con el blanco a un peon en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonAD(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1190,6 +1213,10 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a un peon en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonAI(X1,Y1,8,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1201,6 +1228,10 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a un peon en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonDD(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1212,6 +1243,10 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a un peon en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoPeonDI(X1,Y1,8,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1223,6 +1258,9 @@ comerBlanco(X1,Y1,8,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(8,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyAD(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1234,6 +1272,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(X2,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyAI(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1245,6 +1286,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(X2,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyDD(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1256,6 +1300,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(X2,Y2).
 
+% Si es valido comer con el blanco a otro rey en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoReyDI(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1268,6 +1315,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   seguirComiendoBlanco(X2,Y2).
 
 
+% Si es valido comer con el blanco a un peon en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonAD(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1279,6 +1329,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(X2,Y2).
 
+% Si es valido comer con el blanco a un peon en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonAI(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1290,6 +1343,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(X2,Y2).
 
+% Si es valido comer con el blanco a un peon en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonDD(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1301,6 +1357,9 @@ comerBlanco(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoBlanco(X2,Y2).
 
+% Si es valido comer con el blanco a un peon en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el blanco en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el blanco.
 comerBlanco(X1,Y1,X2,Y2):-
   validoComerBlancoPeonDI(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1313,12 +1372,16 @@ comerBlanco(X1,Y1,X2,Y2):-
   seguirComiendoBlanco(X2,Y2).
 
 
+% Si se puede seguir comiendo con el  negro al estar jugando contra la computadora y es el
+% turno del jugador 2 se ejecuta una jugada de la computadora.
 seguirComiendoNegro(X,Y):-
   juega(computadora),
   turno(negro),
   vacio(Z,W),
   comerNegro(X,Y,Z,W), !.
 
+% Si se puede seguir comiendo con el  negro al estar jugando contra otro jugador y es el
+% turno del jugador 2 se le pregunta al usuario a donde quiere mover su ficha para continuar comiendo.
 seguirComiendoNegro(X,Y):-
   juega(humano),
   imprimirTablero,
@@ -1330,48 +1393,61 @@ seguirComiendoNegro(X,Y):-
   read(YN),
   comerNegro(X,Y,XN,YN), !.
 
+% Si se llega hasta acá es porque ya no se puede seguir comiendo.
 seguirComiendoNegro(_X,_Y):- !.
 
+% Se puede seguir comiendo con el negro si es valido comer a otro rey en dirección arriba y a la izquierda.
 puedoSeguirComiendoNegro(X,Y):-
   XA is X - 2,
   YD is Y + 2,
   validoComerNegroReyAD(X,Y,XA,YD).
 
+% Se puede seguir comiendo con el negro si es valido comer a otro rey en dirección arriba y a la derecha.
 puedoSeguirComiendoNegro(X,Y):-
   XA is X - 2,
   YI is Y - 2,
   validoComerNegroReyAI(X,Y,XA,YI).
 
+% Se puede seguir comiendo con el negro si es valido comer a otro rey en dirección abajo y a la izquierda.
 puedoSeguirComiendoNegro(X,Y):-
   XD is X + 2,
   YD is Y + 2,
   validoComerNegroReyDD(X,Y,XD,YD).
 
+% Se puede seguir comiendo con el negro si es valido comer a otro rey en dirección abajo y a la derecha.
 puedoSeguirComiendoNegro(X,Y):-
   XD is X + 2,
   YI is Y - 2,
   validoComerNegroReyDI(X,Y,XD,YI).
 
+% Se puede seguir comiendo con el negro si es valido comer a otro rey en dirección abajo y a la derecha.
 puedoSeguirComiendoNegro(X,Y):-
   XA is X - 2,
   YD is Y + 2,
   validoComerNegroPeonAD(X,Y,XA,YD).
 
+% Se puede seguir comiendo con el negro si es valido comer a un peon en dirección arriba y a la izquierda.
 puedoSeguirComiendoNegro(X,Y):-
   XA is X - 2,
   YI is Y - 2,
   validoComerNegroPeonAI(X,Y,XA,YI).
 
+% Se puede seguir comiendo con el negro si es valido comer a un peon en dirección arriba y a la derecha.
 puedoSeguirComiendoNegro(X,Y):-
   XD is X + 2,
   YD is Y + 2,
   validoComerNegroPeonDD(X,Y,XD,YD).
 
+% Se puede seguir comiendo con el negro si es valido comer a un peon en dirección abajo y a la izquierda.
 puedoSeguirComiendoNegro(X,Y):-
   XD is X + 2,
   YI is Y - 2,
   validoComerNegroPeonDI(X,Y,XD,YI).
 
+% Si es valido comer con el negro a otro rey en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca un rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyAD(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1383,6 +1459,10 @@ comerNegro(X1,Y1,1,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(1,Y2).
 
+% Si es valido comer con el negro a otro rey en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyAI(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1394,6 +1474,10 @@ comerNegro(X1,Y1,1,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(1,Y2).
 
+% Si es valido comer con el negro a otro rey en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyDD(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1405,6 +1489,10 @@ comerNegro(X1,Y1,1,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(1,Y2).
 
+% Si es valido comer con el negro a otro rey en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyDI(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1417,6 +1505,10 @@ comerNegro(X1,Y1,1,Y2):-
   seguirComiendoNegro(1,Y2).
 
 
+% Si es valido comer con el negro a un peon en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonAD(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1428,6 +1520,10 @@ comerNegro(X1,Y1,1,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(1,Y2).
 
+% Si es valido comer con el negro a un peon en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonAI(X1,Y1,1,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1439,6 +1535,10 @@ comerNegro(X1,Y1,1,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(1,Y2).
 
+% Si es valido comer con el negro a un peon en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonDD(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1450,6 +1550,10 @@ comerNegro(X1,Y1,1,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(1,Y2).
 
+% Si es valido comer con el negro a un peon en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca al rey en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroPeonDI(X1,Y1,1,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1462,6 +1566,9 @@ comerNegro(X1,Y1,1,Y2):-
   seguirComiendoNegro(1,Y2).
 
 
+% Si es valido comer con el negro a otro rey en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyAD(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1473,6 +1580,9 @@ comerNegro(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(X2,Y2).
 
+% Si es valido comer con el negro a otro rey en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyAI(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1484,6 +1594,9 @@ comerNegro(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(X2,Y2).
 
+% Si es valido comer con el negro a otro rey en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyDD(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1495,6 +1608,9 @@ comerNegro(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(X2,Y2).
 
+% Si es valido comer con el negro a otro rey en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroReyDI(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1507,6 +1623,9 @@ comerNegro(X1,Y1,X2,Y2):-
   seguirComiendoNegro(X2,Y2).
 
 
+% Si es valido comer con el negro a un peon en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonAD(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 + 1,
@@ -1518,6 +1637,9 @@ comerNegro(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(X2,Y2).
 
+% Si es valido comer con el negro a un peon en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonAI(X1,Y1,X2,Y2), !,
   XE is X1 - 1, YE is Y1 - 1,
@@ -1529,6 +1651,9 @@ comerNegro(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(X2,Y2).
 
+% Si es valido comer con el negro a un peon en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonDD(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 + 1,
@@ -1540,6 +1665,9 @@ comerNegro(X1,Y1,X2,Y2):-
   assert(vacio(XE,YE)),
   seguirComiendoNegro(X2,Y2).
 
+% Si es valido comer con el negro a un peon en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial y en la posicion del enemigo se colocan vacios y se coloca el negro en la posicion final.
+% Se busca a ver si se puede continuar comiendo con el negro.
 comerNegro(X1,Y1,X2,Y2):-
   validoComerNegroPeonDI(X1,Y1,X2,Y2), !,
   XE is X1 + 1, YE is Y1 - 1,
@@ -1552,6 +1680,7 @@ comerNegro(X1,Y1,X2,Y2):-
   seguirComiendoNegro(X2,Y2).
 
 
+% Es valido que un blanco coma en direccion arriba y a la derecha si en la posicion del enemigo hay un rey negro y en la posicion final un vacio.
 validoComerBlancoReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
@@ -1559,6 +1688,7 @@ validoComerBlancoReyAD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyNegro(X,Y).
 
+% Es valido que un blanco coma en direccion arriba y a la derecha si en la posicion del enemigo hay un peon negro y en la posicion final un vacio.
 validoComerBlancoPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
@@ -1566,6 +1696,7 @@ validoComerBlancoPeonAD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   negro(X,Y).
 
+% Es valido que un blanco coma en direccion arriba y a la izquierda si en la posicion del enemigo hay un rey negro y en la posicion final un vacio.
 validoComerBlancoReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
@@ -1573,6 +1704,7 @@ validoComerBlancoReyAI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyNegro(X,Y).
 
+% Es valido que un blanco coma en direccion arriba y a la izquieda si en la posicion del enemigo hay un peon negro y en la posicion final un vacio.
 validoComerBlancoPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
@@ -1580,6 +1712,7 @@ validoComerBlancoPeonAI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   negro(X,Y).
 
+% Es valido que un blanco coma en direccion abajo y a la derecha si en la posicion del enemigo hay un rey negro y en la posicion final un vacio.
 validoComerBlancoReyDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
@@ -1587,6 +1720,7 @@ validoComerBlancoReyDD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyNegro(X,Y).
 
+% Es valido que un blanco coma en direccion abajo y a la derecha si en la posicion del enemigo hay un peon negro y en la posicion final un vacio.
 validoComerBlancoPeonDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
@@ -1594,6 +1728,7 @@ validoComerBlancoPeonDD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   negro(X,Y).
 
+% Es valido que un blanco coma en direccion abajo y a la izquierda si en la posicion del enemigo hay un rey negro y en la posicion final un vacio.
 validoComerBlancoReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
@@ -1601,6 +1736,7 @@ validoComerBlancoReyDI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyNegro(X,Y).
 
+% Es valido que un blanco coma en direccion abajo y a la izquierda si en la posicion del enemigo hay un peon negro y en la posicion final un vacio.
 validoComerBlancoPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
@@ -1608,13 +1744,15 @@ validoComerBlancoPeonDI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   negro(X,Y).
 
+% Es valido que un negro coma en direccion arriba y a la derecha si en la posicion del enemigo hay un rey blanco y en la posicion final un vacio.
 validoComerNegroReyAD(X1,Y1,X2,Y2):-
-  X2 is X1 - 2,
+  2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
   vacio(X2,Y2),
   reyBlanco(X,Y).
 
+% Es valido que un negro coma en direccion arriba y a la derecha si en la posicion del enemigo hay un peon blanco y en la posicion final un vacio.
 validoComerNegroPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
@@ -1622,6 +1760,7 @@ validoComerNegroPeonAD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   blanco(X,Y).
 
+% Es valido que un negro coma en direccion arriba y a la izquierda si en la posicion del enemigo hay un rey blanco y en la posicion final un vacio.
 validoComerNegroReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
@@ -1629,6 +1768,7 @@ validoComerNegroReyAI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyBlanco(X,Y).
 
+% Es valido que un negro coma en direccion arriba y a la izquieda si en la posicion del enemigo hay un peon blanco y en la posicion final un vacio.
 validoComerNegroPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
@@ -1636,6 +1776,7 @@ validoComerNegroPeonAI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   blanco(X,Y).
 
+% Es valido que un negro coma en direccion abajo y a la derecha si en la posicion del enemigo hay un rey blanco y en la posicion final un vacio.
 validoComerNegroReyDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
@@ -1643,6 +1784,7 @@ validoComerNegroReyDD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyBlanco(X,Y).
 
+% Es valido que un negro coma en direccion abajo y a la derecha si en la posicion del enemigo hay un peon blanco y en la posicion final un vacio.
 validoComerNegroPeonDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
@@ -1650,6 +1792,7 @@ validoComerNegroPeonDD(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   blanco(X,Y).
 
+% Es valido que un negro coma en direccion abajo y a la izquierda si en la posicion del enemigo hay un rey blanco y en la posicion final un vacio.
 validoComerNegroReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
@@ -1657,6 +1800,7 @@ validoComerNegroReyDI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   reyBlanco(X,Y).
 
+% Es valido que un negro coma en direccion abajo y a la izquierda si en la posicion del enemigo hay un peon blanco y en la posicion final un vacio.
 validoComerNegroPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
@@ -1664,8 +1808,13 @@ validoComerNegroPeonDI(X1,Y1,X2,Y2):-
   vacio(X2,Y2),
   blanco(X,Y).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Movimientos de los Peones %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Si es valido moverse con el blanco en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverBlanco(X1,Y1,8,Y2):-
   validoMoverBlancoAD(X1,Y1,8,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1673,6 +1822,9 @@ moverBlanco(X1,Y1,8,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyBlanco(8,Y2)).
 
+% Si es valido moverse con el blanco en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverBlanco(X1,Y1,8,Y2):-
   validoMoverBlancoAI(X1,Y1,8,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1680,6 +1832,9 @@ moverBlanco(X1,Y1,8,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyBlanco(8,Y2)).
 
+% Si es valido moverse con el blanco en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverBlanco(X1,Y1,8,Y2):-
   validoMoverBlancoDD(X1,Y1,8,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1687,6 +1842,9 @@ moverBlanco(X1,Y1,8,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyBlanco(8,Y2)).
 
+% Si es valido moverse con el blanco en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverBlanco(X1,Y1,8,Y2):-
   validoMoverBlancoDI(X1,Y1,8,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1694,6 +1852,8 @@ moverBlanco(X1,Y1,8,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyBlanco(8,Y2)).
 
+% Si es valido moverse con el blanco en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al blanco.
 moverBlanco(X1,Y1,X2,Y2):-
   validoMoverBlancoAD(X1,Y1,X2,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1701,6 +1861,8 @@ moverBlanco(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)).
 
+% Si es valido moverse con el blanco en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al blanco.
 moverBlanco(X1,Y1,X2,Y2):-
   validoMoverBlancoAI(X1,Y1,X2,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1708,6 +1870,8 @@ moverBlanco(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)).
 
+% Si es valido moverse con el blanco en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al blanco.
 moverBlanco(X1,Y1,X2,Y2):-
   validoMoverBlancoDD(X1,Y1,X2,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1715,6 +1879,8 @@ moverBlanco(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(blanco(X2,Y2)).
 
+% Si es valido moverse con el blanco en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al blanco.
 moverBlanco(X1,Y1,X2,Y2):-
   validoMoverBlancoDI(X1,Y1,X2,Y2), !,
   retract(blanco(X1,Y1)),
@@ -1723,6 +1889,9 @@ moverBlanco(X1,Y1,X2,Y2):-
   assert(blanco(X2,Y2)).
 
 
+% Si es valido moverse con el negro en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverNegro(X1,Y1,1,Y2):-
   validoMoverNegroAD(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
@@ -1730,6 +1899,9 @@ moverNegro(X1,Y1,1,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyNegro(1,Y2)).
 
+% Si es valido moverse con el negro en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverNegro(X1,Y1,1,Y2):-
   validoMoverNegroAI(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
@@ -1737,6 +1909,9 @@ moverNegro(X1,Y1,1,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyNegro(1,Y2)).
 
+% Si es valido moverse con el negro en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverNegro(X1,Y1,1,Y2):-
   validoMoverNegroDD(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
@@ -1744,6 +1919,9 @@ moverNegro(X1,Y1,1,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyNegro(1,Y2)).
 
+% Si es valido moverse con el negro en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% Aqui ademas se cumple que estamos llegando al final del tablero y "coronando".
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al rey.
 moverNegro(X1,Y1,1,Y2):-
   validoMoverNegroDI(X1,Y1,1,Y2), !,
   retract(negro(X1,Y1)),
@@ -1751,6 +1929,8 @@ moverNegro(X1,Y1,1,Y2):-
   assert(vacio(X1,Y1)),
   assert(reyNegro(1,Y2)).
 
+% Si es valido moverse con el negro en direccion arriba y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al negro.
 moverNegro(X1,Y1,X2,Y2):-
   validoMoverNegroAD(X1,Y1,X2,Y2), !,
   retract(negro(X1,Y1)),
@@ -1758,6 +1938,8 @@ moverNegro(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)).
 
+% Si es valido moverse con el negro en direccion arriba y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al negro.
 moverNegro(X1,Y1,X2,Y2):-
   validoMoverNegroAI(X1,Y1,X2,Y2), !,
   retract(negro(X1,Y1)),
@@ -1765,6 +1947,8 @@ moverNegro(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)).
 
+% Si es valido moverse con el negro en direccion abajo y a la derecha, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al negro.
 moverNegro(X1,Y1,X2,Y2):-
   validoMoverNegroDD(X1,Y1,X2,Y2), !,
   retract(negro(X1,Y1)),
@@ -1772,6 +1956,8 @@ moverNegro(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)).
 
+% Si es valido moverse con el negro en direccion abajo y a la izquierda, se cambian los hechos en la base de datos del conocimiento.
+% En la posicion inicial se coloca un vacio y en la posicion final se coloca al negro.
 moverNegro(X1,Y1,X2,Y2):-
   validoMoverNegroDI(X1,Y1,X2,Y2), !,
   retract(negro(X1,Y1)),
@@ -1779,6 +1965,10 @@ moverNegro(X1,Y1,X2,Y2):-
   assert(vacio(X1,Y1)),
   assert(negro(X2,Y2)).
 
+
+% Es valido mover a un blanco si en la posicion final hay un vacio.
+% Aqui están variaciones del predicado segun la direccion del movimiento.
+% (arriba y a la derecha, arriba y a la izquierda, abajo y a la derecha, abajo y a la izquierda).
 
 validoMoverBlancoAD(X1,Y1,X2,Y2):-
   X2 is X1 - 1,
@@ -1799,6 +1989,11 @@ validoMoverBlancoDI(X1,Y1,X2,Y2):-
   X2 is X1 + 1,
   Y2 is Y1 - 1,
   vacio(X2,Y2).
+
+
+% Es valido mover a un negro si en la posicion final hay un vacio.
+% Aqui están variaciones del predicado segun la direccion del movimiento.
+% (arriba y a la derecha, arriba y a la izquierda, abajo y a la derecha, abajo y a la izquierda).
 
 validoMoverNegroAD(X1,Y1,X2,Y2):-
   X2 is X1 - 1,
