@@ -40,7 +40,7 @@ imprimirCasilla(X,Y):-
 inicializarTablero:-
   assert(vacio(1,1)), assert(blanco(1,2)), assert(vacio(1,3)), assert(blanco(1,4)), assert(vacio(1,5)), assert(blanco(1,6)), assert(vacio(1,7)), assert(blanco(1,8)),
   assert(blanco(2,1)), assert(vacio(2,2)), assert(blanco(2,3)), assert(vacio(2,4)), assert(blanco(2,5)), assert(vacio(2,6)), assert(blanco(2,7)), assert(vacio(2,8)),
-  assert(vacio(3,1)), assert(blanco(3,2)), assert(vacio(3,3)), assert(blanco(3,4)), assert(vacio(3,5)), assert(blanco(3,6)), assert(vacio(3,7)), assert(blanco(3,8)),
+  assert(vacio(3,1)), assert(reyBlanco(3,2)), assert(vacio(3,3)), assert(reyBlanco(3,4)), assert(vacio(3,5)), assert(reyBlanco(3,6)), assert(vacio(3,7)), assert(reyBlanco(3,8)),
   assert(vacio(4,1)), assert(vacio(4,2)), assert(vacio(4,3)), assert(vacio(4,4)), assert(vacio(4,5)), assert(vacio(4,6)), assert(vacio(4,7)), assert(vacio(4,8)),
   assert(vacio(5,1)), assert(vacio(5,2)), assert(vacio(5,3)), assert(vacio(5,4)), assert(vacio(5,5)), assert(vacio(5,6)), assert(vacio(5,7)), assert(vacio(5,8)),
   assert(negro(6,1)), assert(vacio(6,2)), assert(negro(6,3)), assert(vacio(6,4)), assert(negro(6,5)), assert(vacio(6,6)), assert(negro(6,7)), assert(vacio(6,8)),
@@ -212,7 +212,7 @@ seguirComiendoReyBlanco(X,Y):-
   juega(computadora),
   turno(blanco),
   imprimirTablero,
-  puedoSeguirComiendoReyBlanco(X,Y),
+  puedoSeguirComiendoReyBlanco(X,Y), !,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -221,7 +221,7 @@ seguirComiendoReyBlanco(X,Y):-
 seguirComiendoReyBlanco(X,Y):-
   juega(humano),
   imprimirTablero,
-  puedoSeguirComiendoReyBlanco(X,Y),
+  puedoSeguirComiendoReyBlanco(X,Y), !,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -232,10 +232,43 @@ seguirComiendoReyBlanco(_X,_Y):- !.
 
 puedoSeguirComiendoReyBlanco(X,Y):-
   XA is X - 2,
+  YD is Y + 2,
+  validoComerReyBlancoReyAD(X,Y,XA,YD).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerReyBlancoReyAI(X,Y,XA,YI).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerReyBlancoReyDD(X,Y,XD,YD).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
   XD is X + 2,
   YI is Y - 2,
+  validoComerReyBlancoReyDI(X,Y,XD,YI).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XA is X - 2,
   YD is Y + 2,
-  (validoComerReyBlancoReyAD(X,Y,XA,XD);validoComerReyBlancoReyAI(X,Y,XA,YI);validoComerReyBlancoReyDD(X,Y,XD,YD);validoComerReyBlancoReyDI(X,Y,XD,YI);validoComerReyBlancoPeonAD(X,Y,XA,YD);validoComerReyBlancoPeonAI(X,Y,XA,YI);validoComerReyBlancoPeonDD(X,Y,XD,YD);validoComerReyBlancoPeonDI(X,Y,XD,YI)).
+  validoComerReyBlancoPeonAD(X,Y,XA,YD).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerReyBlancoPeonAI(X,Y,XA,YI).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerReyBlancoPeonDD(X,Y,XD,YD).
+
+puedoSeguirComiendoReyBlanco(X,Y):-
+  XD is X + 2,
+  YI is Y - 2,
+  validoComerReyBlancoPeonDI(X,Y,XD,YI).
 
 comerReyBlanco(X1,Y1,X2,Y2):-
   validoComerReyBlancoReyAD(X1,Y1,X2,Y2), !,
@@ -334,7 +367,7 @@ seguirComiendoReyNegro(X,Y):-
 seguirComiendoReyNegro(X,Y):-
   juega(humano),
   imprimirTablero,
-  seguirComiendoReyNegro(X,Y),
+  puedoSeguirComiendoReyNegro(X,Y), !,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -344,10 +377,43 @@ seguirComiendoReyNegro(_X,_Y):- !.
 
 puedoSeguirComiendoReyNegro(X,Y):-
   XA is X - 2,
+  YD is Y + 2,
+  validoComerReynegroReyAD(X,Y,XA,YD).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerReynegroReyAI(X,Y,XA,YI).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerReynegroReyDD(X,Y,XD,YD).
+
+puedoSeguirComiendoReyNegro(X,Y):-
   XD is X + 2,
   YI is Y - 2,
+  validoComerReynegroReyDI(X,Y,XD,YI).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XA is X - 2,
   YD is Y + 2,
-  (validoComerReynegroReyAD(X,Y,XA,XD);validoComerReynegroReyAI(X,Y,XA,YI);validoComerReynegroReyDD(X,Y,XD,YD);validoComerReynegroReyDI(X,Y,XD,YI);validoComerReynegroPeonAD(X,Y,XA,YD);validoComerReynegroPeonAI(X,Y,XA,YI);validoComerReynegroPeonDD(X,Y,XD,YD);validoComerReynegroPeonDI(X,Y,XD,YI)).
+  validoComerReynegroPeonAD(X,Y,XA,YD).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerReynegroPeonAI(X,Y,XA,YI).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerReynegroPeonDD(X,Y,XD,YD).
+
+puedoSeguirComiendoReyNegro(X,Y):-
+  XD is X + 2,
+  YI is Y - 2,
+  validoComerReynegroPeonDI(X,Y,XD,YI).
 
 comerReyNegro(X1,Y1,X2,Y2):-
   validoComerReyNegroReyAD(X1,Y1,X2,Y2), !,
@@ -442,96 +508,112 @@ validoComerReyBlancoReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerReyBlancoPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerReyBlancoReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerReyBlancoPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerReyBlancoReyDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerReyBlancoPeonDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerReyBlancoReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerReyBlancoPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerReyNegroReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 validoComerReyNegroReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 validoComerReyNegroReyDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 validoComerReyNegroReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerReyNegroPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -648,51 +730,51 @@ vaciosDiagonalDI(DesdeX, DesdeY, HastaX, HastaY):-
   vaciosDiagonalAD(NuevoX, NuevoY, HastaX, HastaY).
 
 validoMoverReyBlancoAD(X1,Y1,X2,Y2):-
-  X2 is X1 - (X2 - X1),
+  X2 is X1 - (X1 - X2),
   Y2 is Y1 + (Y2 - Y1),
-  X is X1 + 1, Y is Y1 + 1,
+  X is X1 - 1, Y is Y1 + 1,
   vaciosDiagonalAD(X,Y,X2,Y2).
 
 validoMoverReyBlancoAI(X1,Y1,X2,Y2):-
-  X2 is X1 - (X2 - X1),
-  Y2 is Y1 - (X2 - X1),
-  X is X1 + 1, Y is Y1 + 1,
+  X2 is X1 - (X1 - X2),
+  Y2 is Y1 - (Y1 - Y2),
+  X is X1 - 1, Y is Y1 - 1,
   vaciosDiagonalAI(X,Y,X2,Y2).
 
 validoMoverReyBlancoDD(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
-  Y2 is Y1 + (X2 - X1),
+  Y2 is Y1 + (Y2 - Y1),
   X is X1 + 1, Y is Y1 + 1,
   vaciosDiagonalDD(X,Y,X2,Y2).
 
 validoMoverReyBlancoDI(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
-  Y2 is Y1 - (X2 - X1),
-  X is X1 + 1, Y is Y1 + 1,
+  Y2 is Y1 - (Y1 - Y2),
+  X is X1 + 1, Y is Y1 - 1,
   vaciosDiagonalDI(X,Y,X2,Y2).
 
 validoMoverReyNegroAD(X1,Y1,X2,Y2):-
-  X2 is X1 - (X2 - X1),
-  Y2 is Y1 + (X2 - X1),
-  X is X1 + 1, Y is Y1 + 1,
+  X2 is X1 - (X1 - X2),
+  Y2 is Y1 + (Y2 - Y1),
+  X is X1 - 1, Y is Y1 + 1,
   vaciosDiagonalAD(X,Y,X2,Y2).
 
 validoMoverReyNegroAI(X1,Y1,X2,Y2):-
-  X2 is X1 - (X2 - X1),
-  Y2 is Y1 - (X2 - X1),
-  X is X1 + 1, Y is Y1 + 1,
+  X2 is X1 - (X1 - X2),
+  Y2 is Y1 - (Y1 - Y2),
+  X is X1 - 1, Y is Y1 - 1,
   vaciosDiagonalAI(X,Y,X2,Y2).
 
 validoMoverReyNegroDD(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
-  Y2 is Y1 + (X2 - X1),
+  Y2 is Y1 + (Y2 - Y1),
   X is X1 + 1, Y is Y1 + 1,
   vaciosDiagonalDD(X,Y,X2,Y2).
 
 validoMoverReyNegroDI(X1,Y1,X2,Y2):-
   X2 is X1 + (X2 - X1),
-  Y2 is Y1 - (X2 - X1),
-  X is X1 + 1, Y is Y1 + 1,
+  Y2 is Y1 - (Y1 - Y2),
+  X is X1 + 1, Y is Y1 - 1,
   vaciosDiagonalDI(X,Y,X2,Y2).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -707,7 +789,7 @@ seguirComiendoBlanco(X,Y):-
   juega(computadora),
   turno(blanco),
   imprimirTablero,
-  puedoSeguirComiendoBlanco(X,Y),
+  puedoSeguirComiendoBlanco(X,Y), !,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -716,7 +798,7 @@ seguirComiendoBlanco(X,Y):-
 seguirComiendoBlanco(X,Y):-
   juega(humano),
   imprimirTablero,
-  puedoSeguirComiendoBlanco(X,Y),
+  puedoSeguirComiendoBlanco(X,Y), !,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -726,10 +808,43 @@ seguirComiendoBlanco(_X,_Y):- !.
 
 puedoSeguirComiendoBlanco(X,Y):-
   XA is X - 2,
+  YD is Y + 2,
+  validoComerBlancoReyAD(X,Y,XA,YD).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerBlancoReyAI(X,Y,XA,YI).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerBlancoReyDD(X,Y,XD,YD).
+
+puedoSeguirComiendoBlanco(X,Y):-
   XD is X + 2,
   YI is Y - 2,
+  validoComerBlancoReyDI(X,Y,XD,YI).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XA is X - 2,
   YD is Y + 2,
-  (validoComerBlancoReyAD(X,Y,XA,XD);validoComerBlancoReyAI(X,Y,XA,YI);validoComerBlancoReyDD(X,Y,XD,YD);validoComerBlancoReyDI(X,Y,XD,YI);validoComerBlancoPeonAD(X,Y,XA,YD);validoComerBlancoPeonAI(X,Y,XA,YI);validoComerBlancoPeonDD(X,Y,XD,YD);validoComerBlancoPeonDI(X,Y,XD,YI)).
+  validoComerBlancoPeonAD(X,Y,XA,YD).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerBlancoPeonAI(X,Y,XA,YI).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerBlancoPeonDD(X,Y,XD,YD).
+
+puedoSeguirComiendoBlanco(X,Y):-
+  XD is X + 2,
+  YI is Y - 2,
+  validoComerBlancoPeonDI(X,Y,XD,YI).
 
 comerBlanco(X1,Y1,8,Y2):-
   validoComerBlancoReyAD(X1,Y1,8,Y2), !,
@@ -919,7 +1034,7 @@ seguirComiendoNegro(X,Y):-
 seguirComiendoNegro(X,Y):-
   juega(humano),
   imprimirTablero,
-  puedoSeguirComiendoNegro(X,Y),
+  puedoSeguirComiendoNegro(X,Y), !,
   write('A que posición desea moverse? (X.Y.):'), nl,
   read(XN),
   read(YN),
@@ -929,10 +1044,43 @@ seguirComiendoNegro(_X,_Y):- !.
 
 puedoSeguirComiendoNegro(X,Y):-
   XA is X - 2,
+  YD is Y + 2,
+  validoComerNegroReyAD(X,Y,XA,YD).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerNegroReyAI(X,Y,XA,YI).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerNegroReyDD(X,Y,XD,YD).
+
+puedoSeguirComiendoNegro(X,Y):-
   XD is X + 2,
   YI is Y - 2,
+  validoComerNegroReyDI(X,Y,XD,YI).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XA is X - 2,
   YD is Y + 2,
-  (validoComerNegroReyAD(X,Y,XA,XD);validoComerNegroReyAI(X,Y,XA,YI);validoComerNegroReyDD(X,Y,XD,YD);validoComerNegroReyDI(X,Y,XD,YI);validoComerNegroPeonAD(X,Y,XA,YD);validoComerNegroPeonAI(X,Y,XA,YI);validoComerNegroPeonDD(X,Y,XD,YD);validoComerNegroPeonDI(X,Y,XD,YI)).
+  validoComerNegroPeonAD(X,Y,XA,YD).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XA is X - 2,
+  YI is Y - 2,
+  validoComerNegroPeonAI(X,Y,XA,YI).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XD is X + 2,
+  YD is Y + 2,
+  validoComerNegroPeonDD(X,Y,XD,YD).
+
+puedoSeguirComiendoNegro(X,Y):-
+  XD is X + 2,
+  YI is Y - 2,
+  validoComerNegroPeonDI(X,Y,XD,YI).
 
 comerNegro(X1,Y1,1,Y2):-
   validoComerNegroReyAD(X1,Y1,1,Y2), !,
@@ -1118,96 +1266,112 @@ validoComerBlancoReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerBlancoPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerBlancoReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerBlancoPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerBlancoReyDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerBlancoPeonDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerBlancoReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyNegro(X,Y).
 
 validoComerBlancoPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   negro(X,Y).
 
 validoComerNegroReyAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerNegroPeonAD(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 + 2,
   X is X1 - 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 validoComerNegroReyAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerNegroPeonAI(X1,Y1,X2,Y2):-
   X2 is X1 - 2,
   Y2 is Y1 - 2,
   X is X1 - 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 validoComerNegroReyDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerNegroPeonDD(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 + 2,
   X is X1 + 1, Y is Y1 + 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 validoComerNegroReyDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   reyBlanco(X,Y).
 
 validoComerNegroPeonDI(X1,Y1,X2,Y2):-
   X2 is X1 + 2,
   Y2 is Y1 - 2,
   X is X1 + 1, Y is Y1 - 1,
+  vacio(X2,Y2),
   blanco(X,Y).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
