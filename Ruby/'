@@ -1,0 +1,100 @@
+#!/usr/bin/ruby
+
+module RecibeCebada
+  attr_accessor :cantidadCActual, :cantidadCMax
+end
+
+module RecibeMezcla
+  attr_accessor :cantidadMActual, :cantidadMMax
+end
+
+module RecibeLupulo
+  attr_accessor :cantidadLActual, :cantidadLMax
+end
+
+module RecibeLevadura
+  attr_accessor :cantidadVActual, :cantidadVMax
+end
+
+class Maquina
+  attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :cicloActual
+
+  def initialize(cantidadMax, estado, desecho, ciclosProcesamiento)
+    @cantidadMaxima = cantidadMax
+    @estado = estado
+    @desecho = desecho
+    @ciclosProcesamiento = ciclosProcesamiento
+    @cicloActual = 0
+  end
+
+  def enviar
+  end
+
+  def procesar
+  end
+
+  def to_s
+    puts self.class
+  end
+end
+
+class Maquina2 < Maquina
+  attr_accessor :cantidadPAActual, :cantidadPAMax
+    def initialize(cantidadMax, estado, desecho, ciclosProcesamiento, cantidadPA)
+      super(cantidadMax, estado, desecho, ciclosProcesamiento)
+      @cantidadPAActual = 0
+      @cantidadPAMax    = cantidadPA
+    end
+end
+
+def generaMaquina(superclase, nombre, mixins)
+  clase = Class::new(superclase) do
+   include mixins.first unless mixins.first.nil?
+
+    def initialize(cantidadMaxima, estado, desecho, ciclosProcesamiento, cantidadInsumo=nil, cantidadPA=nil)
+     case self.class.included_modules.first
+       when RecibeCebada
+         @cantidadCMax    = cantidadInsumo
+         @cantidadCActual = 0
+       when RecibeMezcla
+         @cantidadMMax    = cantidadInsumo
+         @cantidadMActual = 0
+       when RecibeLupulo
+         @cantidadLMax    = cantidadInsumo
+         @cantidadLActual = 0
+       when RecibeLevadura
+         @cantidadVMax    = cantidadInsumo
+         @cantidadVActual = 0
+       else
+     end
+
+     if cantidadPA.nil? then
+       super(cantidadMaxima, estado, desecho, ciclosProcesamiento)
+     else
+       super(cantidadMaxima, estado, desecho, ciclosProcesamiento, cantidadPA)
+     end
+    end
+
+  end
+
+  Object::const_set nombre, clase
+end
+
+
+generaMaquina(Maquina, 'Silos_de_Cebada', [RecibeCebada])
+  generaMaquina(Maquina2, 'Molino'                        , [])
+  generaMaquina(Maquina2, 'Paila_de_Mezcla'               , [RecibeMezcla])
+  generaMaquina(Maquina2, 'Cuba_de_Filtracion'            , [])
+  generaMaquina(Maquina2, 'Paila_de_Coccion'              , [RecibeLupulo])
+  generaMaquina(Maquina2, 'Tanque_preclarificador'        , [])
+  generaMaquina(Maquina2, 'Enfriador'                     , [])
+  generaMaquina(Maquina2, 'TCC'                           , [RecibeLevadura])
+  generaMaquina(Maquina2, 'Filtro_de_Cerveza'             , [])
+  generaMaquina(Maquina2, 'Tanques_para_Cerveza_Filtrada' , [])
+  generaMaquina(Maquina2, 'Llenadora_y_Tapadora'          , [])
+
+
+def main
+  maquina = Silos_de_Cebada::new(400,:inactiva,0,10,80)
+  puts maquina
+end
