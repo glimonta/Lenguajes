@@ -170,6 +170,7 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
 
     def tomarInsumos
       if puedoTomarInsumos? then
+        puts "Entre"
         $cebada = $cebada - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
         $mezcla = $mezcla - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
         $lupulo = $lupulo - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
@@ -184,6 +185,7 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
       elsif llena? then
         @estado = 'procesando'
       elsif procesando? then
+        puts "procesando"
         if @cicloActual < @ciclosProcesamiento then
           @cicloActual = @cicloActual.succ
         else
@@ -191,6 +193,7 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
           @cantidadProducida = @cantidadMaxima * (1 - @desecho)
           eliminarInsumos unless self.is_a? Silos_de_Cebada
           @estado = 'en espera'
+          enviar(@siguiente)
         end
       elsif en_espera? then
         if @siguiente.inactiva? then
@@ -239,20 +242,19 @@ def main
   silos = Silos_de_Cebada::new(400, 0, 0, molino, 400)
 
 
- # $numeroCiclos.times{
+  $numeroCiclos.times{
+
+    puts "---------CICLO---------"
     maquina = silos
     while (!maquina.nil?)
       maquina.procesar
-      maquina = maquina.siguiente
       puts maquina.to_s
-    end
-    maquina = silos
-    while (!maquina.nil?)
-      maquina.procesar
       maquina = maquina.siguiente
-      puts maquina.to_s
+      a = STDIN.gets.chomp
     end
- # }
+
+
+   }
 
 end
 
