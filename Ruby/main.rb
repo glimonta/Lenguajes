@@ -19,9 +19,9 @@ end
 class Maquina
   attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :cicloActual
 
-  def initialize(cantidadMax, estado, desecho, ciclosProcesamiento,siguiente)
+  def initialize(cantidadMax, desecho, ciclosProcesamiento,siguiente)
     @cantidadMaxima = cantidadMax
-    @estado = estado
+    @estado = 'inactiva'
     @desecho = desecho
     @ciclosProcesamiento = ciclosProcesamiento
     @siguiente = siguiente
@@ -80,7 +80,7 @@ class Maquina2 < Maquina
   attr_accessor :cantidadPAActual, :cantidadPAMax
 
   def initialize(cantidadMax, estado, desecho, ciclosProcesamiento, siguiente, cantidadPA)
-    super(cantidadMax, estado, desecho, ciclosProcesamiento, siguiente)
+    super(cantidadMax, desecho, ciclosProcesamiento, siguiente)
     @cantidadPAActual = 0
     @cantidadPAMax    = cantidadPA
   end
@@ -94,8 +94,8 @@ class Maquina2 < Maquina
     super + str
   end
 
-  def tengoInsumos?
-    super && @cantidadPAActual == @cantidadPAMax
+  def puedoTomarInsumos? 
+    @cantidadPAActual == cantidadPAMax
   end
 
   def eliminarInsumos
@@ -124,9 +124,9 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
       end
 
      if cantidadPA.nil? then
-       super(cantidadMaxima, estado, desecho, ciclosProcesamiento, siguiente)
+       super(cantidadMaxima, desecho, ciclosProcesamiento, siguiente)
      else
-       super(cantidadMaxima, estado, desecho, ciclosProcesamiento, siguiente, cantidadPA)
+       super(cantidadMaxima, desecho, ciclosProcesamiento, siguiente, cantidadPA)
      end
     end
 
@@ -143,15 +143,6 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
       super + str + "\n"
     end
 
-    def tengoInsumos?
-      insumos = super
-      insumos = insumos && @cantidadCActual == @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
-      insumos = insumos && @cantidadMActual == @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
-      insumos = insumos && @cantidadLActual == @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
-      insumos = insumos && @cantidadVActual == @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
-      insumos
-    end
-
     def eliminarInsumos
       super
       @cantidadCActual = 0 if self.class.included_modules.include?(RecibeCebada)
@@ -160,10 +151,33 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
       @cantidadVActual = 0 if self.class.included_modules.include?(RecibeLevadura)
     end
 
+    def asignarSiguiente(siguiente)
+      @siguiente = siguiente
+    end
+
+    def puedoTomarInsumos? 
+      puedo = super
+      puedo = puedo && ($cebada  > @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
+      puedo = puedo && ($mezcla  > @cantidadMMax) if self.class.included_modules.include?(RecibeMezcla)
+      puedo = puedo && ($lupulo  > @cantidadLMax) if self.class.included_modules.include?(RecibeLupulo)
+      puedo = puedo && ($levadura > @cantidadVMax) if self.class.included_modules.include?(RecibeLevadura)
+      puedo
+    end
+
+    def tomarInsumos
+      if puedoTomarInsumos? then
+        $cebada = $cebada - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
+        $mezcla = $mezcla - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
+        $lupulo = $lupulo - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
+        $levadura = $levadura - @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
+        @estado = 'llena'
+      end
+    end
+
     def procesar
       if inactiva? then
-        if tengoInsumos? then
-          @estado = 'llena'
+        if puedoTomarInsumos? then
+          tomarInsumos
         end
       elsif llena? then
         @estado = 'procesando'
@@ -189,24 +203,34 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
 end
 
 
-generaMaquina(Maquina, 'Silos_de_Cebada', 'Molino', [RecibeCebada])
-  generaMaquina(Maquina2, 'Molino'                        , 'Paila_de_Mezcla'               ,[])
-  generaMaquina(Maquina2, 'Paila_de_Mezcla'               , 'Cuba_de_Filtracion'            ,[RecibeMezcla])
-  generaMaquina(Maquina2, 'Cuba_de_Filtracion'            , 'Paila_de_Coccion'              ,[])
-  generaMaquina(Maquina2, 'Paila_de_Coccion'              , 'Tanque_preclarificador'        ,[RecibeLupulo])
-  generaMaquina(Maquina2, 'Tanque_preclarificador'        , 'Enfriador'                     ,[])
-  generaMaquina(Maquina2, 'Enfriador'                     , 'TCC'                           ,[])
-  generaMaquina(Maquina2, 'TCC'                           , 'Filtro_de_Cerveza'             ,[RecibeLevadura])
-  generaMaquina(Maquina2, 'Filtro_de_Cerveza'             , 'Tanques_para_Cerveza_Filtrada' ,[])
-  generaMaquina(Maquina2, 'Tanques_para_Cerveza_Filtrada' , 'Llenadora_y_Tapadora'          ,[])
-  generaMaquina(Maquina2, 'Llenadora_y_Tapadora'          ,  nil                            ,[])
-
+generaMaquina(Maquina, 'Silos_de_Cebada', nil, [RecibeCebada])
+  generaMaquina(Maquina2, 'Molino'                        , nil ,[])
+  generaMaquina(Maquina2, 'Paila_de_Mezcla'               , nil ,[RecibeMezcla])
+  generaMaquina(Maquina2, 'Cuba_de_Filtracion'            , nil ,[])
+  generaMaquina(Maquina2, 'Paila_de_Coccion'              , nil ,[RecibeLupulo])
+  generaMaquina(Maquina2, 'Tanque_Preclarificador'        , nil ,[])
+  generaMaquina(Maquina2, 'Enfriador'                     , nil ,[])
+  generaMaquina(Maquina2, 'TCC'                           , nil ,[RecibeLevadura])
+  generaMaquina(Maquina2, 'Filtro_de_Cerveza'             , nil ,[])
+  generaMaquina(Maquina2, 'Tanques_para_Cerveza_Filtrada' , nil ,[])
+  generaMaquina(Maquina2, 'Llenadora_y_Tapadora'          , nil ,[])
 
 def main
-  maquina = Silos_de_Cebada::new(400,"inactiva",0,10,80)
-  maquina2 = Molino::new(400,"llena",0,50,90,30)
-  maquina3 = Enfriador::new(400,"en espera",60,60,80,60)
-  puts maquina
-  puts maquina2
-  puts maquina3
+  $numeroCiclos = ARG[0]
+  $cebada = ARG[1]
+  $mezcla = ARG[2]
+  $levadura = ARG[3]
+  $lupulo = ARG[4]
+
+  llenadora = Llenadora_y_Tapadora::new(50, 0, 2, nil, nil, 50)
+  tanque = Tanques_para_Cerveza_Filtrada::new(100, 0, 0, llenadora, nil, 100)
+  filtro = Filtro_de_Cerveza::new(100, 0, 1, tanque, nil, 100)
+  tcc = TCC::new(200, 10, 10, filtro, 2, 198)
+  enfriador = Enfriador::new(60, 10, 2, tcc, nil, 60)
+  preclarificador = Tanque_Preclarificador::new(35, 1, 1, enfriador, nil, 35)
+  coccion = Paila_de_Coccion::new(70, 10, 3, preclarificador, 1.75, 68.25)
+  cuba = Cuba_de_Filtracion::new(135, 35, 2, coccion, nil, 135)
+  mezcla = Paila_de_Mezcla::new(150, 0, 2, cuba, 60, 90)
+  molino = Molino::new(100, 2, 1, mezcla, nil, 100)
+  silos = Silos_de_Cebada::new(400, 0, 0, molino, 400)
 end
