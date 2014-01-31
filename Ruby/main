@@ -1,0 +1,45 @@
+#!/usr/bin/ruby
+
+require 'Maquina'
+require 'Maquina2'
+
+def main
+  $numeroCiclos = ARGV[0].to_i
+  $cebada       = ARGV[1].to_i
+  $mezcla       = ARGV[2].to_i
+  $levadura     = ARGV[3].to_i
+  $lupulo       = ARGV[4].to_i
+  $cerveza      = 0
+
+  llenadora = Llenadora_y_Tapadora::new(50, 0, 2, nil, nil, 50)
+  tanque = Tanques_para_Cerveza_Filtrada::new(100, 0, 0, llenadora, nil, 100)
+  filtro = Filtro_de_Cerveza::new(100, 0, 1, tanque, nil, 100)
+  tcc = TCC::new(200, 0.10, 10, filtro, 2, 198)
+  enfriador = Enfriador::new(60, 0, 2, tcc, nil, 60)
+  preclarificador = Tanque_Preclarificador::new(35, 0.01, 1, enfriador, nil, 35)
+  coccion = Paila_de_Coccion::new(70, 0.10, 3, preclarificador, 1.75, 68.25)
+  cuba = Cuba_de_Filtracion::new(135, 0.35, 2, coccion, nil, 135)
+  mezcla = Paila_de_Mezcla::new(150, 0, 2, cuba, 60, 90)
+  molino = Molino::new(100, 0.02, 1, mezcla, nil, 100)
+  silos = Silos_de_Cebada::new(400, 0, 0, molino, 400)
+
+  $numeroCiclos.times do |iterando|
+    estadosPasados  = []
+    estadosActuales = []
+    puts "Inicio ciclo " + iterando.to_s + " \n"
+    puts "Cerveza total: #{$cerveza}\n"
+    puts "Cebada sobrante: #{$cebada}\nLupulo sobrante: #{$lupulo}\n"
+    puts "Levadura sobrante: #{$levadura}\nMezcla Arroz\\Maiz sobrante: #{$mezcla}\n\n"
+    maquina = silos
+    while (!maquina.nil?)
+      estadosPasados.insert(0,maquina.estado)
+      maquina.procesar
+      puts maquina.to_s
+      estadosActuales.insert(0,maquina.estado)
+      maquina = maquina.siguiente
+    end
+      break if (estadosPasados == estadosActuales) && estadosPasados.find_index("procesando").nil?
+   end
+end
+
+main
