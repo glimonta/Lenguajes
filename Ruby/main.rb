@@ -116,7 +116,7 @@ class Maquina2 < Maquina
 end
 
 def generaMaquina(superclase, nombre, siguiente, mixins)
-  clase = Class::new(superclase) do
+  clase @= Class::new(superclase) do
    include mixins.first unless mixins.first.nil?
 
     def initialize(cantidadMaxima, desecho, ciclosProcesamiento, siguiente, cantidadInsumo=nil, cantidadPA=nil)
@@ -160,10 +160,6 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
       @cantidadMActual = 0 if self.class.included_modules.include?(RecibeMezcla)
       @cantidadLActual = 0 if self.class.included_modules.include?(RecibeLupulo)
       @cantidadVActual = 0 if self.class.included_modules.include?(RecibeLevadura)
-    end
-
-    def asignarSiguiente(siguiente)
-      @siguiente = siguiente
     end
 
     def puedoTomarInsumos?
