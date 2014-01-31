@@ -46,7 +46,11 @@ class Maquina
   end
 
   def puedoTomarInsumos?
-    true
+    ($cebada  >= @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
+  end
+
+  def estado
+    @estado
   end
 
   def siguiente
@@ -71,6 +75,7 @@ class Maquina
       end
     else
       puts (@cantidadProducida / 4).to_s
+      $cerveza = $cerveza + (@cantidadProducida / 4)
       @estado = 'inactiva'
     end
   end
@@ -167,20 +172,19 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
 
     def puedoTomarInsumos?
       puedo = super
-      puedo = puedo && ($cebada  >= @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
-      puedo = puedo && ($mezcla  >= @cantidadMMax) if self.class.included_modules.include?(RecibeMezcla)
-      puedo = puedo && ($lupulo  >= @cantidadLMax) if self.class.included_modules.include?(RecibeLupulo)
+      puedo = puedo && ($mezcla   >= @cantidadMMax) if self.class.included_modules.include?(RecibeMezcla)
+      puedo = puedo && ($lupulo   >= @cantidadLMax) if self.class.included_modules.include?(RecibeLupulo)
       puedo = puedo && ($levadura >= @cantidadVMax) if self.class.included_modules.include?(RecibeLevadura)
       puedo
     end
 
     def tomarInsumos
       if puedoTomarInsumos? then
-        $cebada = $cebada - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
-        $mezcla = $mezcla - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
-        $lupulo = $lupulo - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
+        $cebada   = $cebada   - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
+        $mezcla   = $mezcla   - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
+        $lupulo   = $lupulo   - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
         $levadura = $levadura - @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
-        @estado = 'llena'
+        @estado   = 'llena'
       end
     end
 
@@ -235,6 +239,7 @@ def main
   $mezcla       = ARGV[2].to_i
   $levadura     = ARGV[3].to_i
   $lupulo       = ARGV[4].to_i
+  $cerveza      = 0
 
   llenadora = Llenadora_y_Tapadora::new(50, 0, 2, nil, nil, 50)
   tanque = Tanques_para_Cerveza_Filtrada::new(100, 0, 0, llenadora, nil, 100)
@@ -248,20 +253,23 @@ def main
   molino = Molino::new(100, 0.02, 1, mezcla, nil, 100)
   silos = Silos_de_Cebada::new(400, 0, 0, molino, 400)
 
-
-  $numeroCiclos.times{
-
-    puts "---------CICLO---------"
+  $numeroCiclos.times do |iterando|
+    estadosPasados  = []
+    estadosActuales = []
+    puts "Inicio ciclo " + iterando.to_s + " \n"
+    puts "Cerveza total: #{$cerveza}\n"
+    puts "Cebada sobrante: #{$cebada}\nLupulo sobrante: #{$lupulo}\n"
+    puts "Levadura sobrante: #{$levadura}\nMezcla Arroz\\Maiz sobrante: #{$mezcla}\n\n"
     maquina = silos
     while (!maquina.nil?)
+      estadosPasados.insert(0,maquina.estado)
       maquina.procesar
       puts maquina.to_s
+      estadosActuales.insert(0,maquina.estado)
       maquina = maquina.siguiente
-      #a = STDIN.gets.chomp
     end
-      a = STDIN.gets.chomp
-
-   }
+      break if (estadosPasados == estadosActuales) && estadosPasados.find_index("procesando").nil?
+   end
 
 end
 
