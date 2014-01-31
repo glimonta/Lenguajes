@@ -59,9 +59,15 @@ class Maquina
         @siguiente.cantidadPAActual = @siguiente.cantidadPAMax
         @cantidadProducida = @cantidadProducida - @siguiente.cantidadPAMax
       else
-        @siguiente.cantidadPAActual = @cantidadProducida
-        @cantidadProducida = 0
-        @estado = 'inactiva'
+        faltaPorLlenar = @siguiente.cantidadPAMax - @siguiente.cantidadPAActual
+        if faltaPorLlenar > @cantidadProducida
+          @siguiente.cantidadPAActual = @siguiente.cantidadPAActual + @cantidadProducida
+          @cantidadProducida = 0
+          @estado = 'inactiva'
+        else
+          @cantidadProducida = @cantidadProducida - faltaPorLlenar
+          @siguiente.cantidadPAActual = @siguiente.cantidadPAMax
+        end
       end
     else
       puts (@cantidadProducida / 4).to_s
@@ -190,6 +196,7 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
           @cicloActual = @cicloActual.succ
         else
           @cicloActual = 0
+          @cantidadProducida = 0
           @cantidadProducida = @cantidadMaxima * (1 - @desecho)
           eliminarInsumos unless self.is_a? Silos_de_Cebada
           @estado = 'en espera'
