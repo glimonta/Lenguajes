@@ -98,6 +98,8 @@ class Maquina
     puedo
   end
 
+  # Si la maquina puede tomar insumos entonces toma los insumos que necesita de las variables
+  # globales y cambia su estado a llena
   def tomarInsumos
     if puedoTomarInsumos? then
       if self.class.included_modules.include?(RecibeCebada)
@@ -118,6 +120,7 @@ class Maquina
     end
   end
 
+  # Resetea los valores actuales del insumo que reciba.
   def eliminarInsumos
     @cantidadCActual = 0 if self.class.included_modules.include?(RecibeCebada)
     @cantidadMActual = 0 if self.class.included_modules.include?(RecibeMezcla)
@@ -125,6 +128,13 @@ class Maquina
     @cantidadVActual = 0 if self.class.included_modules.include?(RecibeLevadura)
   end
 
+  # Ejecuta las acciones de la maquina en cada uno de los ciclos dependiendo del
+  # estado de la misma. Si esta inactiva toma sus insumos para pasar a llena.
+  # Si esta llena, cambia su estado a procesando. Si esta procesando entonces
+  # si aun no ha terminado los ciclos de procesamiento aumenta un ciclo al actual,
+  # si ya los termino entonces resetea los valores, calcula la cantidad que logra producir,
+  # elimina los insumos, pasa a estado en espera. Si esta en espera entonces envia
+  # lo que produce a la proxima maquina si esta esta inactiva y pasa ella a estar inactiva.
   def procesar
     if inactiva? then
         tomarInsumos
@@ -150,6 +160,8 @@ class Maquina
     end
   end
 
+  # Construye la representacion en String de la maquina. Se conforma por el nombre
+  # y el estado, y en caso de estar inactiva o llena los insumos que posee.
   def to_s
     str = ''
 
