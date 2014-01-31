@@ -17,7 +17,7 @@ module RecibeLevadura
 end
 
 class Maquina
-  attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :cicloActual, :cantidadProducida
+  attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :siguiente, :cicloActual, :cantidadProducida
 
   def initialize(cantidadMax, desecho, ciclosProcesamiento,siguiente)
     @cantidadMaxima = cantidadMax
@@ -51,10 +51,6 @@ class Maquina
 
   def estado
     @estado
-  end
-
-  def siguiente
-    @siguiente
   end
 
   def enviar(siguiente)
