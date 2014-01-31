@@ -6,7 +6,7 @@
 # Andrea Salcedo   10-10666
 
 require 'Maquina'
-require 'Maquina2'
+require 'MaquinaReprocesadora'
 
 def main
   $numeroCiclos = ARGV[0].to_i
