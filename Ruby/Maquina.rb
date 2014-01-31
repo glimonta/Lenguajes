@@ -63,6 +63,9 @@ class Maquina
     @estado == 'llena'
   end
 
+  # Envia a la siguiente maquina en la linea de produccion el producto hecho
+  # por la maquina actual, si hay una maquina siguiente. Si no hay una maquina
+  # siguiente imprime en pantalla la cantidad de cerveza producida en ese ciclo.
   def enviar
     if !@siguiente.nil? then
       if @siguiente.cantidadPAMax <= @cantidadProducida then
