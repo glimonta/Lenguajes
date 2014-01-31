@@ -53,8 +53,8 @@ class Maquina
     @estado
   end
 
-  def enviar(siguiente)
-    if !siguiente.nil? then
+  def enviar
+    if !@siguiente.nil? then
       if @siguiente.cantidadPAMax <= @cantidadProducida then
         @siguiente.cantidadPAActual = @siguiente.cantidadPAMax
         @cantidadProducida = @cantidadProducida - @siguiente.cantidadPAMax
@@ -200,11 +200,11 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
           @cantidadProducida = @cantidadMaxima * (1 - @desecho)
           eliminarInsumos unless self.is_a? Silos_de_Cebada
           @estado = 'en espera'
-          enviar(@siguiente)
+          enviar
         end
       elsif en_espera? then
         if @siguiente.inactiva? then
-          enviar(@siguiente)
+          enviar
         end
       end
     end
