@@ -86,10 +86,21 @@ class Maquina
 
   def tomarInsumos
     if puedoTomarInsumos? then
-      $cebada   = $cebada   - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
-      $mezcla   = $mezcla   - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
-      $lupulo   = $lupulo   - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
-      $levadura = $levadura - @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
+
+      if self.class.included_modules.include?(RecibeCebada)
+        $cebada   = $cebada   - @cantidadCMax
+        @cantidadCActual = @cantidadCMax
+      elsif self.class.included_modules.include?(RecibeMezcla)
+        $mezcla   = $mezcla   - @cantidadMMax
+        @cantidadMActual = @cantidadMMax
+      elsif self.class.included_modules.include?(RecibeLupulo)
+        $lupulo   = $lupulo   - @cantidadLMax
+        @cantidadLActual = @cantidadLMax
+      elsif self.class.included_modules.include?(RecibeLevadura)
+        $levadura = $levadura - @cantidadVMax
+        @cantidadVActual = @cantidadVMax
+      end
+
       @estado   = 'llena'
     end
   end
@@ -135,6 +146,8 @@ class Maquina
       str = str + "Cantidad de Mezcla de Arroz/Maiz: #{@cantidadMActual.to_s} \n" if self.class.included_modules.include?(RecibeMezcla)
       str = str + "Cantidad de Lupulo: #{@cantidadLActual.to_s} \n" if self.class.included_modules.include?(RecibeLupulo)
       str = str + "Cantidad de Levadura: #{@cantidadVActual.to_s} \n" if self.class.included_modules.include?(RecibeLevadura)
+    else
+      str = "\n"
     end
 
     "Maquina #{self.class.name.gsub(/_/," ")} \nEstado: #{@estado} \n" + str
@@ -153,7 +166,7 @@ class Maquina2 < Maquina
   def to_s
     str = ''
     if self.inactiva? || self.llena? then
-      str = "Cantidad de Producto de Maquina Anterior: #{@cantidadPAActual.to_s}\n"
+      str = "Cantidad de Producto de Maquina Anterior: #{@cantidadPAActual.to_s}\n\n"   
     end
 
     super + str
@@ -171,7 +184,7 @@ class Maquina2 < Maquina
 end
 
 def generaMaquina(superclase, nombre, siguiente, mixins)
-  clase @= Class::new(superclase) do
+  clase = Class::new(superclase) do
    include mixins.first unless mixins.first.nil?
 
     def initialize(cantidadMaxima, desecho, ciclosProcesamiento, siguiente, cantidadInsumo=nil, cantidadPA=nil)
