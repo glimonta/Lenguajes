@@ -1,3 +1,8 @@
+# Marcos Campos    10-10108
+# John Delgado     10-10196
+# Gabriela Limonta 10-10385
+# Andrea Salcedo   10-10666
+
 class Maquina2 < Maquina
   attr_accessor :cantidadPAActual, :cantidadPAMax
 
