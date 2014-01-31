@@ -46,7 +46,6 @@ class Maquina
   end
 
   def puedoTomarInsumos?
-    ($cebada  >= @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
   end
 
   def estado
@@ -76,11 +75,66 @@ class Maquina
     end
   end
 
+  def puedoTomarInsumos?
+    puedo = true
+    puedo = ($cebada  >= @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
+    puedo = ($mezcla   >= @cantidadMMax) if self.class.included_modules.include?(RecibeMezcla)
+    puedo = ($lupulo   >= @cantidadLMax) if self.class.included_modules.include?(RecibeLupulo)
+    puedo = ($levadura >= @cantidadVMax) if self.class.included_modules.include?(RecibeLevadura)
+    puedo
+  end
+
+  def tomarInsumos
+    if puedoTomarInsumos? then
+      $cebada   = $cebada   - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
+      $mezcla   = $mezcla   - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
+      $lupulo   = $lupulo   - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
+      $levadura = $levadura - @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
+      @estado   = 'llena'
+    end
+  end
+
+  def eliminarInsumos
+    @cantidadCActual = 0 if self.class.included_modules.include?(RecibeCebada)
+    @cantidadMActual = 0 if self.class.included_modules.include?(RecibeMezcla)
+    @cantidadLActual = 0 if self.class.included_modules.include?(RecibeLupulo)
+    @cantidadVActual = 0 if self.class.included_modules.include?(RecibeLevadura)
+  end
+
+  def procesar
+    if inactiva? then
+        tomarInsumos
+    elsif llena? then
+      @estado = 'procesando'
+    end
+
+    if procesando? then
+      if @cicloActual < @ciclosProcesamiento then
+        @cicloActual = @cicloActual.succ
+      else
+        @cicloActual = 0
+        @cantidadProducida = 0
+        @cantidadProducida = @cantidadMaxima * (1 - @desecho)
+        eliminarInsumos unless self.is_a? Silos_de_Cebada
+        @estado = 'en espera'
+        enviar
+      end
+    elsif en_espera? then
+      if @siguiente.inactiva? then
+        enviar
+      end
+    end
+  end
+
   def to_s
     str = ''
 
     if self.inactiva? || self.llena? then
       str = "Insumos: \n"
+      str = str + "Cantidad de Cebada: #{@cantidadCActual.to_s} \n" if self.class.included_modules.include?(RecibeCebada)
+      str = str + "Cantidad de Mezcla de Arroz/Maiz: #{@cantidadMActual.to_s} \n" if self.class.included_modules.include?(RecibeMezcla)
+      str = str + "Cantidad de Lupulo: #{@cantidadLActual.to_s} \n" if self.class.included_modules.include?(RecibeLupulo)
+      str = str + "Cantidad de Levadura: #{@cantidadVActual.to_s} \n" if self.class.included_modules.include?(RecibeLevadura)
     end
 
     "Maquina #{self.class.name.gsub(/_/," ")} \nEstado: #{@estado} \n" + str
@@ -106,10 +160,11 @@ class Maquina2 < Maquina
   end
 
   def puedoTomarInsumos?
-    @cantidadPAActual == cantidadPAMax
+    super && @cantidadPAActual == cantidadPAMax
   end
 
   def eliminarInsumos
+    super
     @cantidadPAActual = 0
   end
 
@@ -139,70 +194,6 @@ def generaMaquina(superclase, nombre, siguiente, mixins)
      else
        super(cantidadMaxima, desecho, ciclosProcesamiento, siguiente, cantidadPA)
      end
-    end
-
-    def to_s
-      str = ''
-
-      if self.inactiva? || self.llena? then
-        str = str + "Cantidad de Cebada: #{@cantidadCActual.to_s} \n" if self.class.included_modules.include?(RecibeCebada)
-        str = str + "Cantidad de Mezcla de Arroz/Maiz: #{@cantidadMActual.to_s} \n" if self.class.included_modules.include?(RecibeMezcla)
-        str = str + "Cantidad de Lupulo: #{@cantidadLActual.to_s} \n" if self.class.included_modules.include?(RecibeLupulo)
-        str = str + "Cantidad de Levadura: #{@cantidadVActual.to_s} \n" if self.class.included_modules.include?(RecibeLevadura)
-      end
-
-      super + str + "\n"
-    end
-
-    def eliminarInsumos
-      super
-      @cantidadCActual = 0 if self.class.included_modules.include?(RecibeCebada)
-      @cantidadMActual = 0 if self.class.included_modules.include?(RecibeMezcla)
-      @cantidadLActual = 0 if self.class.included_modules.include?(RecibeLupulo)
-      @cantidadVActual = 0 if self.class.included_modules.include?(RecibeLevadura)
-    end
-
-    def puedoTomarInsumos?
-      puedo = super
-      puedo = puedo && ($mezcla   >= @cantidadMMax) if self.class.included_modules.include?(RecibeMezcla)
-      puedo = puedo && ($lupulo   >= @cantidadLMax) if self.class.included_modules.include?(RecibeLupulo)
-      puedo = puedo && ($levadura >= @cantidadVMax) if self.class.included_modules.include?(RecibeLevadura)
-      puedo
-    end
-
-    def tomarInsumos
-      if puedoTomarInsumos? then
-        $cebada   = $cebada   - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
-        $mezcla   = $mezcla   - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
-        $lupulo   = $lupulo   - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
-        $levadura = $levadura - @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
-        @estado   = 'llena'
-      end
-    end
-
-    def procesar
-      if inactiva? then
-          tomarInsumos
-      elsif llena? then
-        @estado = 'procesando'
-      end
-
-      if procesando? then
-        if @cicloActual < @ciclosProcesamiento then
-          @cicloActual = @cicloActual.succ
-        else
-          @cicloActual = 0
-          @cantidadProducida = 0
-          @cantidadProducida = @cantidadMaxima * (1 - @desecho)
-          eliminarInsumos unless self.is_a? Silos_de_Cebada
-          @estado = 'en espera'
-          enviar
-        end
-      elsif en_espera? then
-        if @siguiente.inactiva? then
-          enviar
-        end
-      end
     end
 
   end
