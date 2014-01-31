@@ -17,7 +17,7 @@ module RecibeLevadura
 end
 
 class Maquina
-  attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :cicloActual
+  attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :cicloActual, :cantidadProducida
 
   def initialize(cantidadMax, desecho, ciclosProcesamiento,siguiente)
     @cantidadMaxima = cantidadMax
@@ -26,7 +26,7 @@ class Maquina
     @ciclosProcesamiento = ciclosProcesamiento
     @siguiente = siguiente
     @cicloActual = 0
-    @cantidadProducida
+    @cantidadProducida = 0
   end
 
   def inactiva?
