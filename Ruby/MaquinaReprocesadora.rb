@@ -7,10 +7,10 @@
 # Hereda de la clase Maquina y tiene dos atributos nuevos cantidad de producto anterior
 # actual y cantidad de producto anterior maximo. Las maquinas de esta clase son las maquinas que
 # reciben como insumo el producto de una maquina anterior.
-class Maquina2 < Maquina
+class MaquinaReprocesadora < Maquina
   attr_accessor :cantidadPAActual, :cantidadPAMax
 
-  # Inicializa un objeto de la clase Maquina2, toma como argumentos su cantidad maxima, el porcentaje
+  # Inicializa un objeto de la clase MaquinaReprocesadora, toma como argumentos su cantidad maxima, el porcentaje
   # de desecho, los ciclos de procesamiento, la maquina siguiente y la cantidad de producto anterior.
   # Llama al constructor de la superclase e inicializa la cantidad de producto anterior actual en cero.
   def initialize(cantidadMax, desecho, ciclosProcesamiento, siguiente, cantidadPA)
@@ -61,7 +61,7 @@ def generaMaquina(superclase, nombre, mixins)
     # en caso de que si se incializan esos atributos con la cantidad de insumo la cantidad maxima
     # y con cero la cantidad actual. Si cantidadPA es nil entonces no toma producto anterior y se
     # llama al inicializador de maquina, si en cambio tiene cantidadPA se llama al constructor de
-    # Maquina2 que lleva mas argumentos.
+    # MaquinaReprocesadora que lleva mas argumentos.
     def initialize(cantidadMaxima, desecho, ciclosProcesamiento, siguiente, cantidadInsumo=nil, cantidadPA=nil)
       if self.class.included_modules.include?(RecibeCebada) then
         @cantidadCMax    = cantidadInsumo
@@ -93,13 +93,13 @@ end
 # indicando el nombre de la clase de la que heredan, el nombre de la nueva clase,
 # y la lista de modulos que incluyen
 generaMaquina(Maquina, 'Silos_de_Cebada', [RecibeCebada])
-  generaMaquina(Maquina2, 'Molino'                        , [])
-  generaMaquina(Maquina2, 'Paila_de_Mezcla'               , [RecibeMezcla])
-  generaMaquina(Maquina2, 'Cuba_de_Filtracion'            , [])
-  generaMaquina(Maquina2, 'Paila_de_Coccion'              , [RecibeLupulo])
-  generaMaquina(Maquina2, 'Tanque_Preclarificador'        , [])
-  generaMaquina(Maquina2, 'Enfriador'                     , [])
-  generaMaquina(Maquina2, 'TCC'                           , [RecibeLevadura])
-  generaMaquina(Maquina2, 'Filtro_de_Cerveza'             , [])
-  generaMaquina(Maquina2, 'Tanques_para_Cerveza_Filtrada' , [])
-  generaMaquina(Maquina2, 'Llenadora_y_Tapadora'          , [])
+  generaMaquina(MaquinaReprocesadora, 'Molino'                        , [])
+  generaMaquina(MaquinaReprocesadora, 'Paila_de_Mezcla'               , [RecibeMezcla])
+  generaMaquina(MaquinaReprocesadora, 'Cuba_de_Filtracion'            , [])
+  generaMaquina(MaquinaReprocesadora, 'Paila_de_Coccion'              , [RecibeLupulo])
+  generaMaquina(MaquinaReprocesadora, 'Tanque_Preclarificador'        , [])
+  generaMaquina(MaquinaReprocesadora, 'Enfriador'                     , [])
+  generaMaquina(MaquinaReprocesadora, 'TCC'                           , [RecibeLevadura])
+  generaMaquina(MaquinaReprocesadora, 'Filtro_de_Cerveza'             , [])
+  generaMaquina(MaquinaReprocesadora, 'Tanques_para_Cerveza_Filtrada' , [])
+  generaMaquina(MaquinaReprocesadora, 'Llenadora_y_Tapadora'          , [])
