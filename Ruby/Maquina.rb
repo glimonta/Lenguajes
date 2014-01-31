@@ -1,22 +1,38 @@
+# Marcos Campos    10-10108
+# John Delgado     10-10196
+# Gabriela Limonta 10-10385
+# Andrea Salcedo   10-10666
+
+# Modulo que sera incluido en las clases que reciban cebada como insumo.
 module RecibeCebada
   attr_accessor :cantidadCActual, :cantidadCMax
 end
 
+# Modulo que sera incluido en las clases que reciban mezcla de arroz y maiz como insumo.
 module RecibeMezcla
   attr_accessor :cantidadMActual, :cantidadMMax
 end
 
+# Modulo que sera incluido en las clases que reciban lupulo como insumo.
 module RecibeLupulo
   attr_accessor :cantidadLActual, :cantidadLMax
 end
 
+# Modulo que sera incluido en las clases que reciban levadura como insumo.
 module RecibeLevadura
   attr_accessor :cantidadVActual, :cantidadVMax
 end
 
+# Clase para modelar a las maquinas del sistema de creacion de cervezas.
+# poseen como atributos su cantidad maxima (Kg), el estado de la misma, el porcentaje
+# de desecho, la cantidad de ciclos de procesamiento, la maquina que le sigue en la linea
+# de produccion, el ciclo actual en el que se encuentra y la cantidad de producto que hace.
 class Maquina
   attr_accessor :cantidadMaxima, :estado, :desecho, :ciclosProcesamiento, :siguiente, :cicloActual, :cantidadProducida
 
+  # Inicializa un objeto de la clase Maquina, toma como argumentos su cantidad maxima, el porcentaje
+  # de desecho, los ciclos de procesamiento y la maquina siguiente. Se incializan por defecto en el
+  # ciclo actual cero, con cantidad producida cero y en estado inactiva.
   def initialize(cantidadMax, desecho, ciclosProcesamiento,siguiente)
     @cantidadMaxima = cantidadMax
     @estado = 'inactiva'
@@ -27,27 +43,24 @@ class Maquina
     @cantidadProducida = 0
   end
 
+  # Permite saber si una maquina esta en estado inactiva
   def inactiva?
     @estado == 'inactiva'
   end
 
+  # Permite saber si una maquina esta en estado procesando
   def procesando?
     @estado == 'procesando'
   end
 
+  # Permite saber si una maquina esta en estado en espera
   def en_espera?
     @estado == 'en espera'
   end
 
+  # Permite saber si una maquina esta en estado llena
   def llena?
     @estado == 'llena'
-  end
-
-  def puedoTomarInsumos?
-  end
-
-  def estado
-    @estado
   end
 
   def enviar
@@ -73,9 +86,12 @@ class Maquina
     end
   end
 
+  # Permite saber si la maquina puede tomar insumos, revisa que la cantidad de
+  # insumo en la variable global sea mayor a la cantidad que necesita la maquina
+  # del mismo si esta maquina recibe este insumo.
   def puedoTomarInsumos?
     puedo = true
-    puedo = ($cebada  >= @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
+    puedo = ($cebada   >= @cantidadCMax) if self.class.included_modules.include?(RecibeCebada)
     puedo = ($mezcla   >= @cantidadMMax) if self.class.included_modules.include?(RecibeMezcla)
     puedo = ($lupulo   >= @cantidadLMax) if self.class.included_modules.include?(RecibeLupulo)
     puedo = ($levadura >= @cantidadVMax) if self.class.included_modules.include?(RecibeLevadura)
@@ -84,10 +100,20 @@ class Maquina
 
   def tomarInsumos
     if puedoTomarInsumos? then
-      $cebada   = $cebada   - @cantidadCMax if self.class.included_modules.include?(RecibeCebada)
-      $mezcla   = $mezcla   - @cantidadMMax if self.class.included_modules.include?(RecibeMezcla)
-      $lupulo   = $lupulo   - @cantidadLMax if self.class.included_modules.include?(RecibeLupulo)
-      $levadura = $levadura - @cantidadVMax if self.class.included_modules.include?(RecibeLevadura)
+      if self.class.included_modules.include?(RecibeCebada)
+        $cebada   = $cebada   - @cantidadCMax
+        @cantidadCActual = @cantidadCMax
+      elsif self.class.included_modules.include?(RecibeMezcla)
+        $mezcla   = $mezcla   - @cantidadMMax
+        @cantidadMActual = @cantidadMMax
+      elsif self.class.included_modules.include?(RecibeLupulo)
+        $lupulo   = $lupulo   - @cantidadLMax
+        @cantidadLActual = @cantidadLMax
+      elsif self.class.included_modules.include?(RecibeLevadura)
+        $levadura = $levadura - @cantidadVMax
+        @cantidadVActual = @cantidadVMax
+      end
+
       @estado   = 'llena'
     end
   end
@@ -133,6 +159,8 @@ class Maquina
       str = str + "Cantidad de Mezcla de Arroz/Maiz: #{@cantidadMActual.to_s} \n" if self.class.included_modules.include?(RecibeMezcla)
       str = str + "Cantidad de Lupulo: #{@cantidadLActual.to_s} \n" if self.class.included_modules.include?(RecibeLupulo)
       str = str + "Cantidad de Levadura: #{@cantidadVActual.to_s} \n" if self.class.included_modules.include?(RecibeLevadura)
+    else
+      str = "\n"
     end
 
     "Maquina #{self.class.name.gsub(/_/," ")} \nEstado: #{@estado} \n" + str
