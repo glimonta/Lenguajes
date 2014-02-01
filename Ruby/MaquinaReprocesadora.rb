@@ -25,7 +25,7 @@ class MaquinaReprocesadora < Maquina
   def to_s
     str = ''
     if self.inactiva? || self.llena? then
-      str = "Cantidad de Producto de Maquina Anterior: #{@cantidadPAActual.to_s}\n"
+      str = "Cantidad de Producto de Maquina Anterior: #{@cantidadPAActual.to_s}\n\n"
     end
 
     super + str

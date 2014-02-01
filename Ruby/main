@@ -5,10 +5,13 @@
 # Gabriela Limonta 10-10385
 # Andrea Salcedo   10-10666
 
-require 'Maquina'
-require 'MaquinaReprocesadora'
+require_relative 'Maquina'
+require_relative 'MaquinaReprocesadora'
 
 def main
+
+  #Se inicializa la cantidad de ciclos y la cantidad disponible de
+  #insumos basicos
   $numeroCiclos = ARGV[0].to_i
   $cebada       = ARGV[1].to_i
   $mezcla       = ARGV[2].to_i
@@ -16,6 +19,7 @@ def main
   $lupulo       = ARGV[4].to_i
   $cerveza      = 0
 
+  #Se crea cada instancia de las maquinas y se enlazan
   llenadora = Llenadora_y_Tapadora::new(50, 0, 2, nil, nil, 50)
   tanque = Tanques_para_Cerveza_Filtrada::new(100, 0, 0, llenadora, nil, 100)
   filtro = Filtro_de_Cerveza::new(100, 0, 1, tanque, nil, 100)
@@ -28,13 +32,12 @@ def main
   molino = Molino::new(100, 0.02, 1, mezcla, nil, 100)
   silos = Silos_de_Cebada::new(400, 0, 0, molino, 400)
 
+  #Se itera hasta que se haya cumplido la cantidad de ciclos o hasta que 
+  #sea imposible seguir procesando
   $numeroCiclos.times do |iterando|
     estadosPasados  = []
     estadosActuales = []
-    puts "Inicio ciclo " + iterando.to_s + " \n"
-    puts "Cerveza total: #{$cerveza}\n"
-    puts "Cebada sobrante: #{$cebada}\nLupulo sobrante: #{$lupulo}\n"
-    puts "Levadura sobrante: #{$levadura}\nMezcla Arroz\\Maiz sobrante: #{$mezcla}\n\n"
+    puts "Inicio ciclo " + (iterando+1).to_s + " \n"
     maquina = silos
     while (!maquina.nil?)
       estadosPasados.insert(0,maquina.estado)
@@ -43,8 +46,12 @@ def main
       estadosActuales.insert(0,maquina.estado)
       maquina = maquina.siguiente
     end
-      break if (estadosPasados == estadosActuales) && estadosPasados.find_index("procesando").nil?
-   end
+    puts "Fin ciclo " + (iterando+1).to_s + " \n\n"
+    break if (estadosPasados == estadosActuales) && estadosPasados.find_index("procesando").nil?
+  end
+  puts "Cerveza total: #{$cerveza}\n"
+  puts "Cebada sobrante: #{$cebada}\nLupulo sobrante: #{$lupulo}\n"
+  puts "Levadura sobrante: #{$levadura}\nMezcla Arroz\\Maiz sobrante: #{$mezcla}\n\n"
 end
 
 main
